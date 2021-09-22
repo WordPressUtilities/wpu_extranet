@@ -7,3 +7,4 @@ Simple toolbox to create an extranet or a customer account
 - [ ] Translate fields
 - [ ] Hooks to skin forms
 - [ ] Instructions to install
+- [ ] remove pages from sitemap
