@@ -33,23 +33,25 @@ function wpu_extranet_lostpassword__form($args = array()) {
     }
 
     $extra_fields = wpu_extranet__user_register_fields();
+    $settings = wpu_extranet_get_skin_settings();
 
     $html = '';
-
+    $html .= '<div class="' . $settings['form_wrapper_classname'] . ' form-lostpassword-wrapper">';
     $html .= '<form name="lostpasswordform" id="lostpasswordform" action="' . esc_url(network_site_url('wp-login.php?action=lostpassword', 'login_post')) . '" method="post">';
     $html .= $args['before_fields'];
-    $html .= '<ul class="cssc-form">';
-    $html .= '<li class="box">';
+    $html .= '<ul class="' . $settings['form_items_classname'] . '">';
+    $html .= '<li class="' . $settings['form_box_classname'] . '">';
     $html .= '<label for="user_login" >' . __('Username or Email Address') . '</label>';
     $html .= '<input required type="text" name="user_login" id="user_login" class="input" value="" size="20" autocapitalize="off" /></label>';
     $html .= '</li>';
-    $html .= '<li class="box box-submit">';
+    $html .= '<li class=""' . $settings['form_box_submit_classname'] . '">';
     do_action('lostpassword_form');
     $html .= '<input type="hidden" name="redirect_to" value="' . esc_attr(add_query_arg('success', '1', get_permalink())) . '" />';
-    $html .= '<button class="wpu_extranet-button" type="submit"><span>' . __('Get New Password') . '</span></button>';
+    $html .= '<button class="' . $settings['form_submit_button_classname'] . '" type="submit"><span>' . __('Get New Password') . '</span></button>';
     $html .= '</li>';
     $html .= '</ul>';
     $html .= '</form>';
+    $html .= '</div>';
     return $html;
 }
 

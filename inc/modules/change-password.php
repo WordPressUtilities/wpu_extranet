@@ -78,27 +78,31 @@ function wpu_extranet_change_password__form($args = array()) {
     }
     $html = '';
 
+    $settings = wpu_extranet_get_skin_settings();
+
+    $html .= '<div class="' . $settings['form_wrapper_classname'] . ' form-changepassword-wrapper">';
     $html .= '<h3>' . __('Change password', 'wpu_extranet') . '</h3>';
-    $html .= '<form action="' . get_permalink() . '" method="post">';
+    $html .= '<form name="changepasswordform" id="changepasswordform" action="' . get_permalink() . '" method="post">';
     $html .= $args['before_fields'];
-    $html .= '<ul class="cssc-form">';
-    $html .= '<li class="box">';
+    $html .= '<ul class="' . $settings['form_items_classname'] . '">';
+    $html .= '<li class="' . $settings['form_box_classname'] . '">';
     $html .= '<label for="current_password">' . __('Enter your current password :', 'wpu_extranet') . '</label>';
     $html .= '<input minlength="6" id="current_password" type="password" name="current_password" title="current_password" placeholder="" required/>';
     $html .= '</li>';
-    $html .= '<li class="box">';
+    $html .= '<li class="' . $settings['form_box_classname'] . '">';
     $html .= '<label for="new_password">' . __('New password :', 'wpu_extranet') . '</label>';
     $html .= '<input minlength="6" id="new_password" type="password" name="new_password" title="new_password" placeholder="" required/>';
     $html .= '</li>';
-    $html .= '<li class="box">';
+    $html .= '<li class="' . $settings['form_box_classname'] . '">';
     $html .= '<label for="confirm_new_password">' . __('Confirm new password :', 'wpu_extranet') . '</label>';
     $html .= '<input minlength="6" id="confirm_new_password" type="password" name="confirm_new_password" title="confirm_new_password" placeholder="" required/>';
     $html .= '</li>';
-    $html .= '<li class="box box-submit">';
-    $html .= '<button class="wpu_extranet-button" type="submit"><span>' . __('Change password', 'wpu_extranet') . '</span></button>';
+    $html .= '<li class=""' . $settings['form_box_submit_classname'] . '">';
+    $html .= '<button class="' . $settings['form_submit_button_classname'] . '" type="submit"><span>' . __('Change password', 'wpu_extranet') . '</span></button>';
     $html .= '</li>';
     $html .= '</ul>';
     $html .= '</form>';
+    $html .= '</div>';
 
     return $html;
 }

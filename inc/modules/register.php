@@ -45,33 +45,35 @@ function wpu_extranet_register__form($args = array()) {
 
     $extra_fields = wpu_extranet__user_register_fields();
 
-    $html = '';
+    $settings = wpu_extranet_get_skin_settings();
 
+    $html = '';
+    $html .= '<div class="' . $settings['form_wrapper_classname'] . ' form-register-wrapper">';
     $html .= '<form name="registerform" id="registerform" action="' . esc_url(site_url('wp-login.php?action=register', 'login_post')) . '" method="post" novalidate="novalidate">';
     $html .= $args['before_fields'];
-
-    $html .= '<ul class="cssc-form">';
+    $html .= '<ul class="' . $settings['form_items_classname'] . '">';
     foreach ($extra_fields as $field_id => $field):
-        $html .= '<li class="box">';
+        $html .= '<li class="' . $settings['form_box_classname'] . '">';
         $html .= '<label for="' . $field_id . '">' . $field['label'] . '</label>';
         $html .= '<input type="text" name="' . $field_id . '" id="' . $field_id . '" class="input" value="" size="20" autocapitalize="off" />';
         $html .= '</li>';
     endforeach;
-    $html .= '<li class="box">';
+    $html .= '<li class="' . $settings['form_box_classname'] . '">';
     $html .= '<label for="user_login">' . __('Username', 'wpu_extranet') . '</label>';
     $html .= '<input type="text" name="user_login" id="user_login" class="input" value="" size="20" autocapitalize="off" />';
     $html .= '</li>';
-    $html .= '<li class="box">';
+    $html .= '<li class="' . $settings['form_box_classname'] . '">';
     $html .= '<label for="user_email">' . __('Email', 'wpu_extranet') . '</label>';
     $html .= '<input type="email" name="user_email" id="user_email" class="input" value="" size="25" />';
     $html .= '</li>';
     do_action('register_form');
-    $html .= '<li class="submit">';
+    $html .= '<li class=""' . $settings['form_box_submit_classname'] . '">';
     $html .= '<input type="hidden" name="redirect_to" value="' . esc_attr(add_query_arg('register', 'success', get_permalink())) . '" />';
-    $html .= '<button class="wpu-extranet-button" type="submit" name="wp-submit" id="wp-submit"><span>' . __('Register') . '</span></button>';
+    $html .= '<button class="' . $settings['form_submit_button_classname'] . '" type="submit" name="wp-submit" id="wp-submit"><span>' . __('Register', 'wpu_extranet') . '</span></button>';
     $html .= '</li>';
     $html .= '</ul>';
     $html .= '</form>';
+    $html .= '</div>';
     return $html;
 }
 

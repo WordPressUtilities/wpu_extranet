@@ -69,29 +69,32 @@ function wpu_extranet_update_metas__form($args = array()) {
     }
 
     $extra_fields = wpu_extranet__user_register_fields();
+    $settings = wpu_extranet_get_skin_settings();
+
     $user = wp_get_current_user();
 
     $html = '';
-
+    $html .= '<div class="' . $settings['form_wrapper_classname'] . ' form-editmetas-wrapper">';
     $html .= '<h3>' . __('Infos', 'wpu_extranet') . '</h3>';
-    $html .= '<form action="' . get_permalink() . '" method="post">';
-    $html .= '<ul class="cssc-form">';
+    $html .= '<form name="editmetasform" id="editmetasform" action="' . get_permalink() . '" method="post">';
+    $html .= '<ul class="' . $settings['form_items_classname'] . '">';
     $html .= $args['before_fields'];
-    $html .= '<li class="box">';
+    $html .= '<li class="' . $settings['form_box_classname'] . '">';
     $html .= '<label for="username">' . __('Username :', 'wpu_extranet') . '</label>';
     $html .= '<input readonly type="text" name="username" value="' . esc_attr($user->display_name) . '" id="username" class="input" value="" size="20" autocapitalize="off" />';
     $html .= '</li>';
     foreach ($extra_fields as $field_id => $field):
-        $html .= '<li class="box">';
+        $html .= '<li class="' . $settings['form_box_classname'] . '">';
         $html .= '<label for="' . $field_id . '">' . $field['label'] . ' :</label>';
         $html .= '<input type="text" name="' . $field_id . '" value="' . esc_attr(get_user_meta(get_current_user_id(), $field_id, 1)) . '" id="' . $field_id . '" class="input" value="" size="20" autocapitalize="off" />';
         $html .= '</li>';
     endforeach;
-    $html .= '<li class="box box-submit">';
-    $html .= '<button class="wpu_extranet-button" type="submit"><span>' . __('Edit my infos', 'wpu_extranet') . '</span></button>';
+    $html .= '<li class=""' . $settings['form_box_submit_classname'] . '">';
+    $html .= '<button class="' . $settings['form_submit_button_classname'] . '" type="submit"><span>' . __('Edit my infos', 'wpu_extranet') . '</span></button>';
     $html .= '</li>';
     $html .= '</ul>';
     $html .= '</form>';
+    $html .= '</div>';
     return $html;
 }
 
