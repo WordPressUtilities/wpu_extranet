@@ -46,3 +46,19 @@ add_action('set_current_user', function () {
         show_admin_bar(false);
     }
 });
+
+/* Change login back URL
+-------------------------- */
+
+add_filter('login_site_html_link', function ($content) {
+    $content = sprintf(
+        '<a href="%s">%s</a>',
+        esc_url(wpu_extranet__get_login_page()),
+        sprintf(
+            /* translators: %s: Site title. */
+            _x('&larr; Go to %s', 'site'),
+            get_bloginfo('title', 'display')
+        )
+    );
+    return $content;
+}, 10, 1);

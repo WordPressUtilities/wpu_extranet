@@ -15,6 +15,14 @@ function wpu_extranet__get_dashboard_page() {
     return apply_filters('wpu_extranet__get_dashboard_page', get_permalink(get_option('extranet_dashboard__page_id')));
 }
 
+function wpu_extranet__get_lostpassword_page() {
+    return apply_filters('wpu_extranet__get_lostpassword_page', get_permalink(get_option('extranet_lostpassword__page_id')));
+}
+
+function wpu_extranet__get_register_page() {
+    return apply_filters('wpu_extranet__get_register_page', get_permalink(get_option('extranet_register__page_id')));
+}
+
 /* Mark a page as extranet
 -------------------------- */
 
@@ -36,7 +44,7 @@ add_filter('wputh_post_metas_fields', function ($fields) {
 });
 
 /* ----------------------------------------------------------
-  Menu
+  Templates
 ---------------------------------------------------------- */
 
 /* Menu

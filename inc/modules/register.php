@@ -4,11 +4,31 @@
   Registration
 ---------------------------------------------------------- */
 
+add_filter('registration_errors', function ($errors, $login, $email) {
+    if (!is_wp_error($errors) || empty($errors->errors) || empty($_POST) || !isset($_POST['wpu_extranet']) || $_POST['wpu_extranet'] != 'register') {
+        return $errors;
+    }
+    $error = 0;
+    if (isset($errors->errors['username_exists'])) {
+        $error = 1;
+    }
+    if (isset($errors->errors['email_exists'])) {
+        $error = 2;
+    }
+    if (isset($errors->errors['invalid_username'])) {
+        $error = 3;
+    }
+    wp_redirect(add_query_arg('registererror', $error, wpu_extranet__get_register_page()));
+    die;
+}, 10, 3);
+
 /* Re-enable registration
 -------------------------- */
 
 add_action('plugins_loaded', function () {
-    remove_filter('pre_option_users_can_register', 'wputh_admin_option_users_can_register');
+    if (apply_filters('wpu_extranet__user_register_enabled', true)) {
+        remove_filter('pre_option_users_can_register', 'wputh_admin_option_users_can_register');
+    }
 });
 
 /* Form action
@@ -27,6 +47,24 @@ function wpu_extranet_register__action() {
     $html_return = '';
     if (isset($_GET['register']) && $_GET['register'] == 'success') {
         $html_return .= '<p class="form-register-success">' . __('Registration confirmation will be emailed to you.', 'wpu_extranet') . '</p>';
+    }
+
+    if (isset($_GET['registererror'])) {
+        $html_return .= '<p class="form-register-error">';
+        switch ($_GET['registererror']) {
+        case '1':
+            $html_return .= __('This username already exists.', 'wpu_extranet');
+            break;
+        case '2':
+            $html_return .= __('This email is already registered.', 'wpu_extranet');
+            break;
+        case '3':
+            $html_return .= __('This username contains invalid characters.', 'wpu_extranet');
+            break;
+        default:
+            $html_return .= __('Registration failed.', 'wpu_extranet');
+        }
+        $html_return .= '</p>';
     }
 
     return $html_return;
@@ -68,6 +106,7 @@ function wpu_extranet_register__form($args = array()) {
     $html .= '</li>';
     do_action('register_form');
     $html .= '<li class=""' . $settings['form_box_submit_classname'] . '">';
+    $html .= '<input type="hidden" name="wpu_extranet" value="register" />';
     $html .= '<input type="hidden" name="redirect_to" value="' . esc_attr(add_query_arg('register', 'success', get_permalink())) . '" />';
     $html .= '<button class="' . $settings['form_submit_button_classname'] . '" type="submit" name="wp-submit" id="wp-submit"><span>' . __('Register', 'wpu_extranet') . '</span></button>';
     $html .= '</li>';

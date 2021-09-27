@@ -4,6 +4,20 @@
   Lost password
 ---------------------------------------------------------- */
 
+/* Redirect
+-------------------------- */
+
+add_action('lost_password', function ($errors) {
+    if (is_wp_error($errors)) {
+        $error = 0;
+        if (isset($errors->errors['invalidcombo'])) {
+            $error = 1;
+        }
+        wp_redirect(add_query_arg('lostpassworderror', $error, wpu_extranet__get_lostpassword_page()));
+        die;
+    }
+}, 10, 1);
+
 /* Form action
 -------------------------- */
 
@@ -16,6 +30,17 @@ function wpu_extranet_lostpassword__action() {
     $html_return = '';
     if (isset($_GET['lostpassword']) && $_GET['lostpassword'] == 'success') {
         $html_return .= '<p class="form-lostpassword-success">' . __('Check your email for the confirmation link.', 'wpu_extranet') . '</p>';
+    }
+    if (isset($_GET['lostpassworderror'])) {
+        $html_return .= '<p class="form-lostpassword-error">';
+        switch ($_GET['lostpassworderror']) {
+        case '1':
+            $html_return .= __('Your account could not be found.', 'wpu_extranet');
+            break;
+        default:
+            $html_return .= __('Reset password failed.', 'wpu_extranet');
+        }
+        $html_return .= '</p>';
     }
 
     return $html_return;
@@ -46,7 +71,7 @@ function wpu_extranet_lostpassword__form($args = array()) {
     $html .= '</li>';
     $html .= '<li class=""' . $settings['form_box_submit_classname'] . '">';
     do_action('lostpassword_form');
-    $html .= '<input type="hidden" name="redirect_to" value="' . esc_attr(add_query_arg('success', '1', get_permalink())) . '" />';
+    $html .= '<input type="hidden" name="redirect_to" value="' . esc_attr(add_query_arg('lostpassword', 'success', get_permalink())) . '" />';
     $html .= '<button class="' . $settings['form_submit_button_classname'] . '" type="submit"><span>' . __('Get New Password') . '</span></button>';
     $html .= '</li>';
     $html .= '</ul>';
