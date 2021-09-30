@@ -47,6 +47,19 @@ add_action('set_current_user', function () {
     }
 });
 
+/* Force login back URL
+-------------------------- */
+
+add_filter('login_url', function ($url) {
+    if ($GLOBALS['pagenow'] != 'wp-login.php' || !isset($_GET['action'])) {
+        return $url;
+    }
+    if ($_GET['action'] == 'resetpass' || $_GET['action'] == 'rp') {
+        return wpu_extranet__get_login_page();
+    }
+    return $url;
+}, 10, 1);
+
 /* Change login back URL
 -------------------------- */
 

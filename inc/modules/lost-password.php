@@ -10,7 +10,7 @@
 add_action('lost_password', function ($errors) {
     if (is_wp_error($errors)) {
         $error = 0;
-        if (isset($errors->errors['invalidcombo'])) {
+        if (isset($errors->errors['invalidcombo']) || isset($errors->errors['invalid_email'])) {
             $error = 1;
         }
         wp_redirect(add_query_arg('lostpassworderror', $error, wpu_extranet__get_lostpassword_page()));
