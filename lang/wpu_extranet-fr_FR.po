@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WPU Extranet\n"
-"POT-Creation-Date: 2021-09-27 21:06+0200\n"
+"POT-Creation-Date: 2021-10-05 19:12+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Darklg <darklg.blog@gmail.com>\n"
 "Language-Team: \n"
@@ -16,24 +16,29 @@ msgstr ""
 "X-Poedit-SearchPath-0: ../.\n"
 
 #: .././inc/modules/change-password.php:36
-msgid "All fields are required"
-msgstr "Tous les champs sont requis"
+msgid "All fields are required."
+msgstr "Tous les champs sont requis."
 
 #: .././inc/modules/change-password.php:41
-msgid "Current password is incorrect"
-msgstr "Le mot de passe actuel est incorrect"
+msgid "Current password is incorrect."
+msgstr "Le mot de passe actuel est incorrect."
 
 #: .././inc/modules/change-password.php:46
-msgid "Passwords do not match"
-msgstr "Les mots de passe ne correspondent pas"
+msgid "Passwords do not match."
+msgstr "Les mots de passe ne correspondent pas."
 
 #: .././inc/modules/change-password.php:51
-msgid "Password is too short, minimum of 6 characters"
-msgstr "Le mot de passe est trop court, minimum de 6 caractères"
+msgid "Password is too short, minimum of 6 characters."
+msgstr "Le mot de passe est trop court, minimum de 6 caractères."
 
 #: .././inc/modules/change-password.php:57
 msgid "Password successfully changed!"
 msgstr "Mot de passe changé avec succès !"
+
+#: .././inc/modules/change-password.php:61
+#: .././inc/modules/lost-password.php:35 .././inc/modules/register.php:53
+msgid "Error:"
+msgstr "Erreur :"
 
 #: .././inc/modules/change-password.php:84
 #: .././inc/modules/change-password.php:101
@@ -131,3 +136,15 @@ msgstr "S'inscrire"
 #: .././inc/pages.php:79
 msgid "Log out"
 msgstr "Se déconnecter"
+
+#~ msgid "All fields are required"
+#~ msgstr "Tous les champs sont requis"
+
+#~ msgid "Current password is incorrect"
+#~ msgstr "Le mot de passe actuel est incorrect"
+
+#~ msgid "Passwords do not match"
+#~ msgstr "Les mots de passe ne correspondent pas"
+
+#~ msgid "Password is too short, minimum of 6 characters"
+#~ msgstr "Le mot de passe est trop court, minimum de 6 caractères"

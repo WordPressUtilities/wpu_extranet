@@ -3,7 +3,7 @@
 /*
 Plugin Name: WPU Extranet
 Description: Simple toolbox to create an extranet or a customer account
-Version: 0.3.1
+Version: 0.3.2
 Author: Darklg
 Author URI: https://darklg.me/
 License: MIT License
@@ -18,6 +18,7 @@ Plugin URI: https://github.com/WordPressUtilities/wpu_extranet
 include dirname(__FILE__) . '/inc/notifications.php';
 include dirname(__FILE__) . '/inc/pages.php';
 include dirname(__FILE__) . '/inc/permissions.php';
+include dirname(__FILE__) . '/inc/user.php';
 
 /* ----------------------------------------------------------
   Modules

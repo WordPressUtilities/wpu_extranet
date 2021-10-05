@@ -29,10 +29,10 @@ function wpu_extranet_lostpassword__action() {
 
     $html_return = '';
     if (isset($_GET['lostpassword']) && $_GET['lostpassword'] == 'success') {
-        $html_return .= '<p class="form-lostpassword-success">' . __('Check your email for the confirmation link.', 'wpu_extranet') . '</p>';
+        $html_return .= '<p class="extranet-message extranet-message--success form-lostpassword-success">' . __('Check your email for the confirmation link.', 'wpu_extranet') . '</p>';
     }
     if (isset($_GET['lostpassworderror'])) {
-        $html_return .= '<p class="form-lostpassword-error">';
+        $html_return .= '<p class="extranet-message extranet-message--error form-lostpassword-error"><strong class="error">' . __('Error:', 'wpu_extranet') . '</strong> ';
         switch ($_GET['lostpassworderror']) {
         case '1':
             $html_return .= __('Your account could not be found.', 'wpu_extranet');

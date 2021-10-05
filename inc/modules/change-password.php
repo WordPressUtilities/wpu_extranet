@@ -33,32 +33,32 @@ function wpu_extranet_change_password__action() {
 
     /* Empty fields */
     if (empty($current_password) || empty($new_password) || empty($confirm_new_password)) {
-        $errors[] = __('All fields are required', 'wpu_extranet');
+        $errors[] = __('All fields are required.', 'wpu_extranet');
     }
 
     /* Invalid password */
     if (!wp_check_password($current_password, $current_user->data->user_pass, $current_user->ID)) {
-        $errors[] = __('Current password is incorrect', 'wpu_extranet');
+        $errors[] = __('Current password is incorrect.', 'wpu_extranet');
     }
 
     /* New passwords do not match */
     if ($new_password != $confirm_new_password) {
-        $errors[] = __('Passwords do not match', 'wpu_extranet');
+        $errors[] = __('Passwords do not match.', 'wpu_extranet');
     }
 
     /* Short password */
     if (strlen($new_password) < 6) {
-        $errors[] = __('Password is too short, minimum of 6 characters', 'wpu_extranet');
+        $errors[] = __('Password is too short, minimum of 6 characters.', 'wpu_extranet');
     }
 
     $html_return = '';
     if (empty($errors)) {
         wp_set_password($new_password, $current_user->ID);
-        $html_return .= '<p class="form-password-success">' . __('Password successfully changed!', 'wpu_extranet') . '</p>';
+        $html_return .= '<p class="extranet-message extranet-message--success form-password-success">' . __('Password successfully changed!', 'wpu_extranet') . '</p>';
     } else {
-        $html_return .= '<ul class="form-password-error">';
+        $html_return .= '<ul class="extranet-message extranet-message--error form-password-error">';
         foreach ($errors as $error) {
-            $html_return .= '<li><strong>Error: </strong>' . $error . '</li>';
+            $html_return .= '<li><strong class="error">' . __('Error:', 'wpu_extranet') . '</strong> ' . $error . '</li>';
         }
         $html_return .= '</ul>';
     }

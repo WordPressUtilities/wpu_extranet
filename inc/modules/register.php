@@ -46,11 +46,11 @@ function wpu_extranet_register__action() {
 
     $html_return = '';
     if (isset($_GET['register']) && $_GET['register'] == 'success') {
-        $html_return .= '<p class="form-register-success">' . __('Registration confirmation will be emailed to you.', 'wpu_extranet') . '</p>';
+        $html_return .= '<p class="extranet-message extranet-message--success form-register-success">' . __('Registration confirmation will be emailed to you.', 'wpu_extranet') . '</p>';
     }
 
     if (isset($_GET['registererror'])) {
-        $html_return .= '<p class="form-register-error">';
+        $html_return .= '<p class="extranet-message extranet-message--error form-register-error"><strong class="error">' . __('Error:', 'wpu_extranet') . '</strong> ';
         switch ($_GET['registererror']) {
         case '1':
             $html_return .= __('This username already exists.', 'wpu_extranet');
@@ -91,6 +91,9 @@ function wpu_extranet_register__form($args = array()) {
     $html .= $args['before_fields'];
     $html .= '<ul class="' . $settings['form_items_classname'] . '">';
     foreach ($extra_fields as $field_id => $field):
+        if (!$field['in_registration_form']) {
+            continue;
+        }
         $html .= '<li class="' . $settings['form_box_classname'] . '">';
         $html .= '<label for="' . $field_id . '">' . $field['label'] . '</label>';
         $html .= '<input type="text" name="' . $field_id . '" id="' . $field_id . '" class="input" value="" size="20" autocapitalize="off" />';

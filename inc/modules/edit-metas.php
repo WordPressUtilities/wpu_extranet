@@ -4,17 +4,6 @@
   Metas
 ---------------------------------------------------------- */
 
-function wpu_extranet__user_register_fields() {
-    return apply_filters('wpu_extranet__user_register_fields', array(
-        'first_name' => array(
-            'label' => __('First name', 'wpu_extranet')
-        ),
-        'last_name' => array(
-            'label' => __('Last name', 'wpu_extranet')
-        )
-    ));
-}
-
 add_action('user_register', function ($user_id) {
     $fields = wpu_extranet__user_register_fields();
     foreach ($fields as $id => $field) {
@@ -51,7 +40,7 @@ function wpu_extranet_update_metas__action() {
 
     $html_return = '';
     if ($has_update) {
-        $html_return = '<p class="form-password-success">' . __('Profile successfully updated!', 'wpu_extranet') . '</p>';
+        $html_return = '<p class="extranet-message extranet-message--success form-password-success">' . __('Profile successfully updated!', 'wpu_extranet') . '</p>';
     }
 
     return $html_return;
@@ -84,6 +73,9 @@ function wpu_extranet_update_metas__form($args = array()) {
     $html .= '<input readonly type="text" name="username" value="' . esc_attr($user->display_name) . '" id="username" class="input" value="" size="20" autocapitalize="off" />';
     $html .= '</li>';
     foreach ($extra_fields as $field_id => $field):
+        if (!$field['in_editmetas_form']) {
+            continue;
+        }
         $html .= '<li class="' . $settings['form_box_classname'] . '">';
         $html .= '<label for="' . $field_id . '">' . $field['label'] . ' :</label>';
         $html .= '<input type="text" name="' . $field_id . '" value="' . esc_attr(get_user_meta(get_current_user_id(), $field_id, 1)) . '" id="' . $field_id . '" class="input" value="" size="20" autocapitalize="off" />';
