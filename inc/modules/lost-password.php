@@ -69,7 +69,7 @@ function wpu_extranet_lostpassword__form($args = array()) {
     $html .= '<label for="user_login" >' . __('Username or Email Address') . '</label>';
     $html .= '<input required type="text" name="user_login" id="user_login" class="input" value="" size="20" autocapitalize="off" /></label>';
     $html .= '</li>';
-    $html .= '<li class=""' . $settings['form_box_submit_classname'] . '">';
+    $html .= '<li class="' . $settings['form_box_submit_classname'] . '">';
     do_action('lostpassword_form');
     $html .= '<input type="hidden" name="redirect_to" value="' . esc_attr(add_query_arg('lostpassword', 'success', get_permalink())) . '" />';
     $html .= '<button class="' . $settings['form_submit_button_classname'] . '" type="submit"><span>' . __('Get New Password') . '</span></button>';

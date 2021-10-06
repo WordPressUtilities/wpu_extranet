@@ -97,7 +97,7 @@ function wpu_extranet_change_password__form($args = array()) {
     $html .= '<label for="confirm_new_password">' . __('Confirm new password :', 'wpu_extranet') . '</label>';
     $html .= '<input minlength="6" id="confirm_new_password" type="password" name="confirm_new_password" title="confirm_new_password" placeholder="" required/>';
     $html .= '</li>';
-    $html .= '<li class=""' . $settings['form_box_submit_classname'] . '">';
+    $html .= '<li class="' . $settings['form_box_submit_classname'] . '">';
     $html .= '<button class="' . $settings['form_submit_button_classname'] . '" type="submit"><span>' . __('Change password', 'wpu_extranet') . '</span></button>';
     $html .= '</li>';
     $html .= '</ul>';
