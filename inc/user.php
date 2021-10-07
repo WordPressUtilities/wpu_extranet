@@ -68,3 +68,16 @@ function wpu_extranet__display_field($field_id, $field) {
     $html .= '</li>';
     return $html;
 }
+
+/* ----------------------------------------------------------
+  Log user by id
+---------------------------------------------------------- */
+
+function wpu_extranet_log_user($user){
+    if(is_numeric($user)){
+        $user = get_user_by('id', $user);
+    }
+    wp_set_auth_cookie($user->ID);
+    wp_set_current_user($user->ID);
+    do_action('wp_login', $user->user_login, $user);
+}

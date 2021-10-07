@@ -44,6 +44,26 @@ function wpu_extranet_register__action() {
         die;
     }
 
+    if (!isset($_POST['wpuextranet_register']) || !wp_verify_nonce($_POST['wpuextranet_register'], 'wpuextranet_register_action')) {
+        return '';
+    }
+
+    $register_success_user_id = false;
+    if (!empty($_POST) && isset($_POST['user_login'], $_POST['user_email'], $_POST['user_password'])) {
+        $user_login = sanitize_text_field($_POST['user_login']);
+        $user_email = sanitize_email($_POST['user_email']);
+        $user_id = register_new_user($user_login, $user_email);
+
+        // Registration was a success
+        // Log user and redirect to the dashboard
+        if (is_numeric($user_id)) {
+            wp_set_password($_POST['user_password'], $user_id);
+            wpu_extranet_log_user($user_id);
+            wp_redirect(wpu_extranet__get_dashboard_page());
+            die;
+        }
+    }
+
     $html_return = '';
     if (isset($_GET['register']) && $_GET['register'] == 'success') {
         $html_return .= '<p class="extranet-message extranet-message--success form-register-success">' . __('Registration confirmation will be emailed to you.', 'wpu_extranet') . '</p>';
@@ -87,7 +107,7 @@ function wpu_extranet_register__form($args = array()) {
 
     $html = '';
     $html .= '<div class="' . $settings['form_wrapper_classname'] . ' form-register-wrapper">';
-    $html .= '<form name="registerform" id="registerform" action="' . esc_url(site_url('wp-login.php?action=register', 'login_post')) . '" method="post">';
+    $html .= '<form name="registerform" id="registerform" action="' . esc_url(get_permalink()) . '" method="post">';
     $html .= $args['before_fields'];
     $html .= '<ul class="' . $settings['form_items_classname'] . '">';
     foreach ($extra_fields as $field_id => $field):
@@ -99,17 +119,23 @@ function wpu_extranet_register__form($args = array()) {
     endforeach;
     $html .= wpu_extranet__display_field('user_login', array(
         'label' => __('Username', 'wpu_extranet'),
-        'attributes' => 'required="required"'
+        'attributes' => 'autocomplete="off" pattern="[A-Za-z0-9_]+" required="required"'
     ));
     $html .= wpu_extranet__display_field('user_email', array(
         'type' => 'email',
         'attributes' => 'required="required"',
         'label' => __('Email', 'wpu_extranet')
     ));
+    $html .= wpu_extranet__display_field('user_password', array(
+        'type' => 'password',
+        'attributes' => 'minlength="6" autocomplete="off" required="required"',
+        'label' => __('Password', 'wpu_extranet')
+    ));
     do_action('register_form');
     $html .= '<li class="' . $settings['form_box_submit_classname'] . '">';
     $html .= '<input type="hidden" name="wpu_extranet" value="register" />';
     $html .= '<input type="hidden" name="redirect_to" value="' . esc_attr(add_query_arg('register', 'success', get_permalink())) . '" />';
+    $html .= wp_nonce_field('wpuextranet_register_action', 'wpuextranet_register', true, false);
     $html .= '<button class="' . $settings['form_submit_button_classname'] . '" type="submit" name="wp-submit" id="wp-submit"><span>' . __('Register', 'wpu_extranet') . '</span></button>';
     $html .= '</li>';
     $html .= '</ul>';

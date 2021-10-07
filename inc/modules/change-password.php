@@ -18,6 +18,10 @@ function wpu_extranet_change_password__action() {
         return '';
     }
 
+    if (!isset($_POST['wpuextranet_changepassword']) || !wp_verify_nonce($_POST['wpuextranet_changepassword'], 'wpuextranet_changepassword_action')) {
+        return '';
+    }
+
     $current_password = trim($_POST['current_password']);
     $new_password = trim($_POST['new_password']);
     $confirm_new_password = trim($_POST['confirm_new_password']);
@@ -53,7 +57,11 @@ function wpu_extranet_change_password__action() {
 
     $html_return = '';
     if (empty($errors)) {
+        // Change password
         wp_set_password($new_password, $current_user->ID);
+        // Log-in again.
+        wpu_extranet_log_user($current_user);
+
         $html_return .= '<p class="extranet-message extranet-message--success form-password-success">' . __('Password successfully changed!', 'wpu_extranet') . '</p>';
     } else {
         $html_return .= '<ul class="extranet-message extranet-message--error form-password-error">';
@@ -82,22 +90,26 @@ function wpu_extranet_change_password__form($args = array()) {
 
     $html .= '<div class="' . $settings['form_wrapper_classname'] . ' form-changepassword-wrapper">';
     $html .= '<h3>' . __('Change password', 'wpu_extranet') . '</h3>';
-    $html .= '<form name="changepasswordform" id="changepasswordform" action="' . get_permalink() . '" method="post">';
+    $html .= '<form name="changepasswordform" id="changepasswordform" action="' . get_permalink() . '#changepasswordform" method="post">';
     $html .= $args['before_fields'];
     $html .= '<ul class="' . $settings['form_items_classname'] . '">';
-    $html .= '<li class="' . $settings['form_box_classname'] . '">';
-    $html .= '<label for="current_password">' . __('Enter your current password :', 'wpu_extranet') . '</label>';
-    $html .= '<input minlength="6" id="current_password" type="password" name="current_password" title="current_password" placeholder="" required/>';
-    $html .= '</li>';
-    $html .= '<li class="' . $settings['form_box_classname'] . '">';
-    $html .= '<label for="new_password">' . __('New password :', 'wpu_extranet') . '</label>';
-    $html .= '<input minlength="6" id="new_password" type="password" name="new_password" title="new_password" placeholder="" required/>';
-    $html .= '</li>';
-    $html .= '<li class="' . $settings['form_box_classname'] . '">';
-    $html .= '<label for="confirm_new_password">' . __('Confirm new password :', 'wpu_extranet') . '</label>';
-    $html .= '<input minlength="6" id="confirm_new_password" type="password" name="confirm_new_password" title="confirm_new_password" placeholder="" required/>';
-    $html .= '</li>';
+    $html .= wpu_extranet__display_field('current_password', array(
+        'type' => 'password',
+        'attributes' => 'minlength="6" autocomplete="off" required="required"',
+        'label' => __('Enter your current password', 'wpu_extranet')
+    ));
+    $html .= wpu_extranet__display_field('new_password', array(
+        'type' => 'password',
+        'attributes' => 'minlength="6" autocomplete="off" required="required"',
+        'label' => __('New password', 'wpu_extranet')
+    ));
+    $html .= wpu_extranet__display_field('confirm_new_password', array(
+        'type' => 'password',
+        'attributes' => 'minlength="6" autocomplete="off" required="required"',
+        'label' => __('Confirm new password', 'wpu_extranet')
+    ));
     $html .= '<li class="' . $settings['form_box_submit_classname'] . '">';
+    $html .= wp_nonce_field('wpuextranet_changepassword_action', 'wpuextranet_changepassword', true, false);
     $html .= '<button class="' . $settings['form_submit_button_classname'] . '" type="submit"><span>' . __('Change password', 'wpu_extranet') . '</span></button>';
     $html .= '</li>';
     $html .= '</ul>';

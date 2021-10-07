@@ -24,6 +24,10 @@ function wpu_extranet_update_metas__action() {
         return '';
     }
 
+    if (!isset($_POST['wpuextranet_editmetas']) || !wp_verify_nonce($_POST['wpuextranet_editmetas'], 'wpuextranet_editmetas_action')) {
+        return '';
+    }
+
     $user_id = get_current_user_id();
 
     $fields = wpu_extranet__user_register_fields();
@@ -81,6 +85,7 @@ function wpu_extranet_update_metas__form($args = array()) {
         $html .= wpu_extranet__display_field($field_id, $field);
     endforeach;
     $html .= '<li class="' . $settings['form_box_submit_classname'] . '">';
+    $html .= wp_nonce_field('wpuextranet_editmetas_action', 'wpuextranet_editmetas', true, false);
     $html .= '<button class="' . $settings['form_submit_button_classname'] . '" type="submit"><span>' . __('Edit my infos', 'wpu_extranet') . '</span></button>';
     $html .= '</li>';
     $html .= '</ul>';

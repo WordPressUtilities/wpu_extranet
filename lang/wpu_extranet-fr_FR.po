@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WPU Extranet\n"
-"POT-Creation-Date: 2021-10-05 19:12+0200\n"
+"POT-Creation-Date: 2021-10-07 11:14+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Darklg <darklg.blog@gmail.com>\n"
 "Language-Team: \n"
@@ -15,69 +15,61 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-SearchPath-0: ../.\n"
 
-#: .././inc/modules/change-password.php:36
+#: .././inc/modules/change-password.php:40
 msgid "All fields are required."
 msgstr "Tous les champs sont requis."
 
-#: .././inc/modules/change-password.php:41
+#: .././inc/modules/change-password.php:45
 msgid "Current password is incorrect."
 msgstr "Le mot de passe actuel est incorrect."
 
-#: .././inc/modules/change-password.php:46
+#: .././inc/modules/change-password.php:50
 msgid "Passwords do not match."
 msgstr "Les mots de passe ne correspondent pas."
 
-#: .././inc/modules/change-password.php:51
+#: .././inc/modules/change-password.php:55
 msgid "Password is too short, minimum of 6 characters."
 msgstr "Le mot de passe est trop court, minimum de 6 caractères."
 
-#: .././inc/modules/change-password.php:57
+#: .././inc/modules/change-password.php:65
 msgid "Password successfully changed!"
 msgstr "Mot de passe changé avec succès !"
 
-#: .././inc/modules/change-password.php:61
-#: .././inc/modules/lost-password.php:35 .././inc/modules/register.php:53
+#: .././inc/modules/change-password.php:69
+#: .././inc/modules/lost-password.php:35 .././inc/modules/register.php:73
 msgid "Error:"
 msgstr "Erreur :"
 
-#: .././inc/modules/change-password.php:84
-#: .././inc/modules/change-password.php:101
+#: .././inc/modules/change-password.php:92
+#: .././inc/modules/change-password.php:113
 msgid "Change password"
 msgstr "Changer le mot de passe"
 
-#: .././inc/modules/change-password.php:89
-msgid "Enter your current password :"
-msgstr "Entrez votre mot de passe actuel :"
+#: .././inc/modules/change-password.php:99
+msgid "Enter your current password"
+msgstr "Veuillez saisir votre mot de passe actuel"
 
-#: .././inc/modules/change-password.php:93
-msgid "New password :"
-msgstr "Nouveau mot de passe :"
+#: .././inc/modules/change-password.php:104
+msgid "New password"
+msgstr "Nouveau mot de passe"
 
-#: .././inc/modules/change-password.php:97
-msgid "Confirm new password :"
-msgstr "Confirmer le nouveau mot de passe :"
+#: .././inc/modules/change-password.php:109
+msgid "Confirm new password"
+msgstr "Confirmer le nouveau mot de passe"
 
-#: .././inc/modules/edit-metas.php:10
-msgid "First name"
-msgstr "Prénom"
-
-#: .././inc/modules/edit-metas.php:13
-msgid "Last name"
-msgstr "Nom"
-
-#: .././inc/modules/edit-metas.php:54
+#: .././inc/modules/edit-metas.php:47
 msgid "Profile successfully updated!"
 msgstr "Profil mis à jour avec succès!"
 
-#: .././inc/modules/edit-metas.php:78
+#: .././inc/modules/edit-metas.php:71
 msgid "Infos"
 msgstr "Infos"
 
-#: .././inc/modules/edit-metas.php:83
-msgid "Username :"
-msgstr "Nom d'utilisateur :"
+#: .././inc/modules/edit-metas.php:76 .././inc/modules/register.php:121
+msgid "Username"
+msgstr "Nom d'utilisateur"
 
-#: .././inc/modules/edit-metas.php:93
+#: .././inc/modules/edit-metas.php:89
 msgid "Edit my infos"
 msgstr "Modifier mes infos"
 
@@ -101,41 +93,61 @@ msgstr "Identifiant ou adresse email"
 msgid "Get New Password"
 msgstr "Obtenir un nouveau mot de passe"
 
-#: .././inc/modules/register.php:49
+#: .././inc/modules/register.php:69
 msgid "Registration confirmation will be emailed to you."
 msgstr "La confirmation d’inscription vous sera envoyée par courriel."
 
-#: .././inc/modules/register.php:56
+#: .././inc/modules/register.php:76
 msgid "This username already exists."
 msgstr "Ce nom d’utilisateur existe déjà."
 
-#: .././inc/modules/register.php:59
+#: .././inc/modules/register.php:79
 msgid "This email is already registered."
 msgstr "Cet e-mail est déjà enregistré."
 
-#: .././inc/modules/register.php:62
+#: .././inc/modules/register.php:82
 msgid "This username contains invalid characters."
 msgstr "Ce nom d’utilisateur contient des caractères non valides."
 
-#: .././inc/modules/register.php:65
+#: .././inc/modules/register.php:85
 msgid "Registration failed."
 msgstr "Échec de l’inscription."
 
-#: .././inc/modules/register.php:100
-msgid "Username"
-msgstr "Nom d'utilisateur"
-
-#: .././inc/modules/register.php:104
+#: .././inc/modules/register.php:127
 msgid "Email"
 msgstr "E-mail"
 
-#: .././inc/modules/register.php:111
+#: .././inc/modules/register.php:132
+msgid "Password"
+msgstr "Mot de passe"
+
+#: .././inc/modules/register.php:139
 msgid "Register"
 msgstr "S'inscrire"
 
 #: .././inc/pages.php:79
 msgid "Log out"
 msgstr "Se déconnecter"
+
+#: .././inc/user.php:10
+msgid "First name"
+msgstr "Prénom"
+
+#: .././inc/user.php:13
+msgid "Last name"
+msgstr "Nom"
+
+#~ msgid "Enter your current password :"
+#~ msgstr "Entrez votre mot de passe actuel :"
+
+#~ msgid "New password :"
+#~ msgstr "Nouveau mot de passe :"
+
+#~ msgid "Confirm new password :"
+#~ msgstr "Confirmer le nouveau mot de passe :"
+
+#~ msgid "Username :"
+#~ msgstr "Nom d'utilisateur :"
 
 #~ msgid "All fields are required"
 #~ msgstr "Tous les champs sont requis"
