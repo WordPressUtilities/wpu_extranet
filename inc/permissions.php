@@ -11,11 +11,11 @@ add_action('wp_login_failed', function ($username) {
     }
 });
 
-/* Redirect to extranet after login
+/* Redirect to extranet after login if the target page is in wp-admin
 -------------------------- */
 
 add_filter('login_redirect', function ($url, $request, $user) {
-    if ($user && is_object($user) && is_a($user, 'WP_User') && !$user->has_cap('edit_posts')) {
+    if (strpos($url, 'wp-admin') !== false && $user && is_object($user) && is_a($user, 'WP_User') && !$user->has_cap('edit_posts')) {
         return wpu_extranet__get_dashboard_page();
     }
     return $url;
