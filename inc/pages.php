@@ -60,16 +60,27 @@ function wpu_extranet_get_menu($args = array()) {
     }
 
     $html = '';
-    $posts_extranet = get_posts(array(
-        'post_type' => 'page',
-        'posts_per_page' => -1,
-        'orderby' => 'menu_order',
-        'meta_query' => array(array(
-            'key' => 'is_extranet_page',
-            'compare' => '1',
-            'value' => '1'
-        ))
-    ));
+
+    $cache_id = 'wpu_extranet_get_menu_posts';
+    $cache_duration = 30*86400;
+
+    // GET CACHED VALUE
+    $posts_extranet = wp_cache_get($cache_id);
+    if ($posts_extranet === false) {
+        // COMPUTE RESULT
+        $posts_extranet = get_posts(array(
+            'post_type' => 'page',
+            'posts_per_page' => -1,
+            'orderby' => 'menu_order',
+            'meta_query' => array(array(
+                'key' => 'is_extranet_page',
+                'compare' => '1',
+                'value' => '1'
+            ))
+        ));
+        // CACHE RESULT
+        wp_cache_set($cache_id, $posts_extranet, '', $cache_duration);
+    }
 
     $html .= '<ul class="extranet-menu">';
     foreach ($posts_extranet as $p) {
@@ -82,3 +93,7 @@ function wpu_extranet_get_menu($args = array()) {
 
     return $html;
 }
+
+add_action('save_post', function () {
+    wp_cache_delete('wpu_extranet_get_menu_posts');
+});
