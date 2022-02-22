@@ -5,7 +5,7 @@
 
 add_action('wp_login_failed', function ($username) {
     $referer = wp_get_referer();
-    if (!strstr($referrer, 'wp-login') && !strstr($referrer, 'wp-admin')) {
+    if (!strstr($referer, 'wp-login') && !strstr($referer, 'wp-admin')) {
         wp_redirect(add_query_arg('login', 'failed', wpu_extranet__get_login_page()));
         exit;
     }
