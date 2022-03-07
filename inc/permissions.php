@@ -61,6 +61,17 @@ add_filter('login_url', function ($url) {
     return $url;
 }, 10, 1);
 
+/* Avoid native register page
+-------------------------- */
+
+add_action('login_form_register', function () {
+    $register_page = wpu_extranet__get_register_page();
+    if ($register_page) {
+        wp_redirect($register_page);
+        die;
+    }
+}, 10);
+
 /* Change login back URL
 -------------------------- */
 
