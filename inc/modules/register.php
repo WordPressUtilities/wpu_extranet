@@ -1,6 +1,14 @@
 <?php
 
 /* ----------------------------------------------------------
+  Honeypot
+---------------------------------------------------------- */
+
+function wpu_extranet_register_get_honeypot_id() {
+    return 'check_' . md5(AUTH_SALT . get_bloginfo('name'));
+}
+
+/* ----------------------------------------------------------
   Registration
 ---------------------------------------------------------- */
 
@@ -43,8 +51,19 @@ function wpu_extranet_register__action() {
         wp_redirect(wpu_extranet__get_dashboard_page());
         die;
     }
+    /* Not submitting or displaying an error message */
+    if (!isset($_POST['wpuextranet_register']) && !isset($_GET['register']) && !isset($_GET['registererror'])) {
+        return '';
+    }
 
-    if (!isset($_POST['wpuextranet_register']) || !wp_verify_nonce($_POST['wpuextranet_register'], 'wpuextranet_register_action')) {
+    /* Invalid nonce */
+    if (isset($_POST['wpuextranet_register']) && !wp_verify_nonce($_POST['wpuextranet_register'], 'wpuextranet_register_action')) {
+        return '';
+    }
+
+    /* Checked honeypot */
+    $honeypot_id = wpu_extranet_register_get_honeypot_id();
+    if (isset($_POST[$honeypot_id]) && $_POST[$honeypot_id] == 1) {
         return '';
     }
 
@@ -132,7 +151,9 @@ function wpu_extranet_register__form($args = array()) {
         'label' => __('Password', 'wpu_extranet')
     ));
     do_action('register_form');
+    $honeypot_id = wpu_extranet_register_get_honeypot_id();
     $html .= '<li class="' . $settings['form_box_submit_classname'] . '">';
+    $html .= '<label for="' . $honeypot_id . '" aria-hidden="true" class="visually-hidden"><input type="radio" name="' . $honeypot_id . '" id="' . $honeypot_id . '" style="display:none" value="1"></label>';
     $html .= '<input type="hidden" name="wpu_extranet" value="register" />';
     $html .= '<input type="hidden" name="redirect_to" value="' . esc_attr(add_query_arg('register', 'success', get_permalink())) . '" />';
     $html .= wp_nonce_field('wpuextranet_register_action', 'wpuextranet_register', true, false);
