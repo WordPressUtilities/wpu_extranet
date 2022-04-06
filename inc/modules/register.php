@@ -78,7 +78,7 @@ function wpu_extranet_register__action() {
         if (is_numeric($user_id)) {
             wp_set_password($_POST['user_password'], $user_id);
             wpu_extranet_log_user($user_id);
-            wp_redirect(wpu_extranet__get_dashboard_page());
+            wp_redirect(add_query_arg('registersuccess', '1', wpu_extranet__get_dashboard_page()));
             die;
         }
     }
