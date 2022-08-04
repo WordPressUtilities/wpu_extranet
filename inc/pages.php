@@ -62,7 +62,7 @@ function wpu_extranet_get_menu($args = array()) {
     $html = '';
 
     $cache_id = 'wpu_extranet_get_menu_posts';
-    $cache_duration = 30*86400;
+    $cache_duration = 30 * 86400;
 
     // GET CACHED VALUE
     $posts_extranet = wp_cache_get($cache_id);

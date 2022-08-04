@@ -61,10 +61,18 @@ function wpu_extranet__display_field($field_id, $field) {
     if (!isset($field['type'])) {
         $field['type'] = 'text';
     }
+    if (!isset($field['before_content'])) {
+        $field['before_content'] = '';
+    }
+    if (!isset($field['after_content'])) {
+        $field['after_content'] = '';
+    }
     $settings = wpu_extranet_get_skin_settings();
     $html .= '<li class="' . $settings['form_box_classname'] . '">';
+    $html .= $field['before_content'];
     $html .= '<label for="' . $field_id . '">' . $field['label'] . ' :</label>';
     $html .= '<input ' . $field['attributes'] . ' type="' . $field['type'] . '" name="' . $field_id . '" value="' . esc_attr($field['value']) . '" id="' . $field_id . '" class="input" size="20" autocapitalize="off" />';
+    $html .= $field['after_content'];
     $html .= '</li>';
     return $html;
 }
@@ -73,11 +81,41 @@ function wpu_extranet__display_field($field_id, $field) {
   Log user by id
 ---------------------------------------------------------- */
 
-function wpu_extranet_log_user($user){
-    if(is_numeric($user)){
+function wpu_extranet_log_user($user) {
+    if (is_numeric($user)) {
         $user = get_user_by('id', $user);
     }
     wp_set_auth_cookie($user->ID);
     wp_set_current_user($user->ID);
     do_action('wp_login', $user->user_login, $user);
 }
+
+/* ----------------------------------------------------------
+  Custom avatar
+---------------------------------------------------------- */
+
+/* Based on https://developer.wordpress.org/reference/hooks/get_avatar/#comment-4570 */
+add_filter('get_avatar_url', function ($avatar_url, $id_or_email, $args) {
+    $user = false;
+
+    if (is_numeric($id_or_email)) {
+        $id = (int) $id_or_email;
+        $user = get_user_by('id', $id);
+    } elseif (is_object($id_or_email)) {
+        if (!empty($id_or_email->user_id)) {
+            $id = (int) $id_or_email->user_id;
+            $user = get_user_by('id', $id);
+        }
+    } else {
+        $user = get_user_by('email', $id_or_email);
+    }
+
+    if ($user && is_object($user)) {
+        $avatar_id = get_user_meta($user->data->ID, 'wpuextranet_avatar_id', true);
+        if ($avatar_id) {
+            return wp_get_attachment_image_url($avatar_id, 'thumbnail');
+        }
+    }
+
+    return $avatar_url;
+}, 1, 3);
