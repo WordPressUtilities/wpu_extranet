@@ -67,6 +67,7 @@ function wpu_extranet__display_field($field_id, $field) {
     if (!isset($field['after_content'])) {
         $field['after_content'] = '';
     }
+    $field = apply_filters('wpu_extranet__display_field__field', $field, $field_id);
     $settings = wpu_extranet_get_skin_settings();
     $html .= '<li class="' . $settings['form_box_classname'] . '">';
     $html .= $field['before_content'];

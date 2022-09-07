@@ -3,7 +3,7 @@
 /*
 Plugin Name: WPU Extranet
 Description: Simple toolbox to create an extranet or a customer account
-Version: 0.6.1
+Version: 0.6.2
 Author: Darklg
 Author URI: https://darklg.me/
 License: MIT License
