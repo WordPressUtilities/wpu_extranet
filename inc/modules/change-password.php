@@ -56,23 +56,20 @@ function wpu_extranet_change_password__action() {
         $errors[] = __('Password is too short, minimum of 6 characters.', 'wpu_extranet');
     }
 
-    $html_return = '';
+    $return_type = 'error';
     if (empty($errors)) {
         // Change password
         wp_set_password($new_password, $current_user->ID);
         // Log-in again.
         wpu_extranet_log_user($current_user);
-
-        $html_return .= '<p class="extranet-message extranet-message--success form-password-success">' . __('Password successfully changed!', 'wpu_extranet') . '</p>';
-    } else {
-        $html_return .= '<ul class="extranet-message extranet-message--error form-password-error">';
-        foreach ($errors as $error) {
-            $html_return .= '<li><strong class="error">' . __('Error:', 'wpu_extranet') . '</strong> ' . $error . '</li>';
-        }
-        $html_return .= '</ul>';
+        $return_type = 'success';
+        $errors[] = __('Password successfully changed!', 'wpu_extranet');
     }
 
-    return $html_return;
+    return wpuextranet_get_html_errors($errors, array(
+        'form_id' => 'change_password',
+        'type' => $return_type
+    ));
 }
 
 /* HTML Form

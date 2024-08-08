@@ -27,24 +27,28 @@ function wpu_extranet_lostpassword__action() {
         wp_redirect(wpu_extranet__get_dashboard_page());
         die;
     }
+    $messages = array();
+    $return_type = 'error';
 
-    $html_return = '';
     if (isset($_GET['lostpassword']) && $_GET['lostpassword'] == 'success') {
-        $html_return .= '<p class="extranet-message extranet-message--success form-lostpassword-success">' . __('Check your email for the confirmation link.', 'wpu_extranet') . '</p>';
+        $return_type = 'success';
+        $messages[] = __('Check your email for the confirmation link.', 'wpu_extranet');
     }
     if (isset($_GET['lostpassworderror'])) {
-        $html_return .= '<p class="extranet-message extranet-message--error form-lostpassword-error"><strong class="error">' . __('Error:', 'wpu_extranet') . '</strong> ';
         switch ($_GET['lostpassworderror']) {
         case '1':
-            $html_return .= __('Your account could not be found.', 'wpu_extranet');
+            $messages[] = __('Your account could not be found.', 'wpu_extranet');
             break;
         default:
-            $html_return .= __('Reset password failed.', 'wpu_extranet');
+            $messages[] = __('Reset password failed.', 'wpu_extranet');
         }
-        $html_return .= '</p>';
     }
 
-    return $html_return;
+    return wpuextranet_get_html_errors($messages, array(
+        'form_id' => 'reset_password',
+        'type' => $return_type
+    ));
+
 }
 
 /* Form HTML

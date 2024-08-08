@@ -47,7 +47,7 @@ function wpu_extranet_change_email__action() {
     }
 
     /* Invalid current email */
-    if($current_email == $new_email){
+    if ($current_email == $new_email) {
         $errors[] = __('New email is the same as the current email.', 'wpu_extranet');
     }
 
@@ -61,26 +61,28 @@ function wpu_extranet_change_email__action() {
         $errors[] = __('Email is already in use.', 'wpu_extranet');
     }
 
+    $errors = apply_filters('wpu_extranet__email__validation', $errors, $new_email);
     $errors = apply_filters('wpu_extranet_change_email__action_errors', $errors, $current_email, $new_email, $confirm_new_email);
 
-    $html_return = '';
+    $return_type = 'error';
     if (empty($errors)) {
         // Change email
         wp_update_user(array(
             'ID' => $user_id,
             'user_email' => $new_email
         ));
-        $html_return = '<p class="extranet-message extranet-message--success form-email-success">' . __('Email successfully updated!', 'wpu_extranet') . '</p>';
-    } else {
-        $html_return = '<p class="extranet-message extranet-message--error form-email-error">' . implode('<br />', $errors) . '</p>';
+        $return_type = 'success';
+        $errors[] = __('Email successfully updated!', 'wpu_extranet');
     }
 
-    return $html_return;
+    return wpuextranet_get_html_errors($errors, array(
+        'form_id' => 'change_email',
+        'type' => $return_type
+    ));
 }
 
 /* HTML Form
 -------------------------- */
-
 
 function wpu_extranet_change_email__form($args = array()) {
     if (!is_array($args)) {

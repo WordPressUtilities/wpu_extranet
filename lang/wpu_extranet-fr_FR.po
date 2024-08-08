@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WPU Extranet\n"
-"POT-Creation-Date: 2024-08-08 12:06+0200\n"
+"POT-Creation-Date: 2024-08-08 16:40+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Darklg <darklg.blog@gmail.com>\n"
 "Language-Team: \n"
@@ -15,176 +15,194 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-SearchPath-0: ../.\n"
 
-#: .././inc/modules/change-email.php:40 .././inc/modules/change-password.php:40
-msgid "All fields are required."
-msgstr "Tous les champs sont requis."
-
-#: .././inc/modules/change-email.php:45
-msgid "Invalid email."
-msgstr "E-mail invalide."
-
-#: .././inc/modules/change-email.php:50
-msgid "New email is the same as the current email."
-msgstr "Le nouvel e-mail est le même que l’e-mail actuel."
-
-#: .././inc/modules/change-email.php:55
-msgid "Emails do not match."
-msgstr "Les e-mails ne sont pas identiques."
-
-#: .././inc/modules/change-email.php:60
-msgid "Email is already in use."
-msgstr "L’e-mail est déjà utilisé."
-
-#: .././inc/modules/change-email.php:72
-msgid "Email successfully updated!"
-msgstr "L’e-mail a été mis à jour avec succès !"
-
-#: .././inc/modules/change-email.php:98 .././inc/modules/change-email.php:120
-msgid "Change email"
-msgstr "Changer d'adresse e-mail"
-
-#: .././inc/modules/change-email.php:105
-msgid "Your current email"
-msgstr "Votre adresse e-mail actuelle"
-
-#: .././inc/modules/change-email.php:111
-msgid "New email"
-msgstr "Nouvel e-mail"
-
-#: .././inc/modules/change-email.php:116
-msgid "Confirm new email"
-msgstr "Confirmez votre nouvel e-mail"
-
-#: .././inc/modules/change-password.php:45
-msgid "Current password is incorrect."
-msgstr "Le mot de passe actuel est incorrect."
-
-#: .././inc/modules/change-password.php:50
-msgid "Passwords do not match."
-msgstr "Les mots de passe ne correspondent pas."
-
-#: .././inc/modules/change-password.php:55
-msgid "Password is too short, minimum of 6 characters."
-msgstr "Le mot de passe est trop court, minimum de 6 caractères."
-
-#: .././inc/modules/change-password.php:65
-msgid "Password successfully changed!"
-msgstr "Mot de passe changé avec succès !"
-
-#: .././inc/modules/change-password.php:69
-#: .././inc/modules/lost-password.php:35 .././inc/modules/register.php:92
+#: .././inc/helpers.php:21
 msgid "Error:"
 msgstr "Erreur :"
 
-#: .././inc/modules/change-password.php:92
-#: .././inc/modules/change-password.php:113
+#: .././inc/modules/change-email.php:41 .././inc/modules/change-password.php:41
+#: .././inc/modules/delete-account.php:52
+msgid "All fields are required."
+msgstr "Tous les champs sont requis."
+
+#: .././inc/modules/change-email.php:46
+msgid "Invalid email."
+msgstr "E-mail invalide."
+
+#: .././inc/modules/change-email.php:51
+msgid "New email is the same as the current email."
+msgstr "Le nouvel e-mail est le même que l’e-mail actuel."
+
+#: .././inc/modules/change-email.php:56
+msgid "Emails do not match."
+msgstr "Les e-mails ne sont pas identiques."
+
+#: .././inc/modules/change-email.php:61
+msgid "Email is already in use."
+msgstr "L’e-mail est déjà utilisé."
+
+#: .././inc/modules/change-email.php:75
+msgid "Email successfully updated!"
+msgstr "L’e-mail a été mis à jour avec succès !"
+
+#: .././inc/modules/change-email.php:101 .././inc/modules/change-email.php:123
+msgid "Change email"
+msgstr "Changer d'adresse e-mail"
+
+#: .././inc/modules/change-email.php:108
+msgid "Your current email"
+msgstr "Votre adresse e-mail actuelle"
+
+#: .././inc/modules/change-email.php:114
+msgid "New email"
+msgstr "Nouvel e-mail"
+
+#: .././inc/modules/change-email.php:119
+msgid "Confirm new email"
+msgstr "Confirmez votre nouvel e-mail"
+
+#: .././inc/modules/change-password.php:46
+msgid "Current password is incorrect."
+msgstr "Le mot de passe actuel est incorrect."
+
+#: .././inc/modules/change-password.php:51
+msgid "Passwords do not match."
+msgstr "Les mots de passe ne correspondent pas."
+
+#: .././inc/modules/change-password.php:56
+msgid "Password is too short, minimum of 6 characters."
+msgstr "Le mot de passe est trop court, minimum de 6 caractères."
+
+#: .././inc/modules/change-password.php:66
+msgid "Password successfully changed!"
+msgstr "Mot de passe changé avec succès !"
+
+#: .././inc/modules/change-password.php:90
+#: .././inc/modules/change-password.php:111
 msgid "Change password"
 msgstr "Changer le mot de passe"
 
-#: .././inc/modules/change-password.php:99
+#: .././inc/modules/change-password.php:97
+#: .././inc/modules/delete-account.php:113
 msgid "Enter your current password"
 msgstr "Veuillez saisir votre mot de passe actuel"
 
-#: .././inc/modules/change-password.php:104
+#: .././inc/modules/change-password.php:102
 msgid "New password"
 msgstr "Nouveau mot de passe"
 
-#: .././inc/modules/change-password.php:109
+#: .././inc/modules/change-password.php:107
 msgid "Confirm new password"
 msgstr "Confirmer le nouveau mot de passe"
 
-#: .././inc/modules/edit-metas.php:49
+#: .././inc/modules/delete-account.php:13
+msgid "You can not delete this type of account."
+msgstr "Vous ne pouvez pas supprimer ce type de compte."
+
+#: .././inc/modules/delete-account.php:57
+msgid "Invalid password."
+msgstr "Mot de passe invalide."
+
+#: .././inc/modules/delete-account.php:105
+#: .././inc/modules/delete-account.php:117
+msgid "Delete your account"
+msgstr "Supprimer votre compte"
+
+#: .././inc/modules/edit-metas.php:50
 msgid "Profile successfully updated!"
 msgstr "Profil mis à jour avec succès!"
 
-#: .././inc/modules/edit-metas.php:115
+#: .././inc/modules/edit-metas.php:120
 msgid "Infos"
 msgstr "Infos"
 
-#: .././inc/modules/edit-metas.php:138
+#: .././inc/modules/edit-metas.php:143
 #, php-format
 msgid "The current avatar is generated by %s."
 msgstr "L’avatar actuel est généré par %s."
 
-#: .././inc/modules/edit-metas.php:141
+#: .././inc/modules/edit-metas.php:146
 msgid "Delete this avatar"
 msgstr "Supprimer cet avatar"
 
-#: .././inc/modules/edit-metas.php:144
+#: .././inc/modules/edit-metas.php:149
 msgid "Avatar"
 msgstr "Avatar"
 
-#: .././inc/modules/edit-metas.php:154 .././inc/modules/register.php:140
+#: .././inc/modules/edit-metas.php:159 .././inc/modules/register.php:150
 msgid "Username"
 msgstr "Nom d'utilisateur"
 
-#: .././inc/modules/edit-metas.php:159 .././inc/modules/register.php:146
+#: .././inc/modules/edit-metas.php:164 .././inc/modules/register.php:156
 msgid "Email"
 msgstr "E-mail"
 
-#: .././inc/modules/edit-metas.php:175
+#: .././inc/modules/edit-metas.php:180
 msgid "Edit my infos"
 msgstr "Modifier mes infos"
 
-#: .././inc/modules/lost-password.php:32
+#: .././inc/modules/lost-password.php:35
 msgid "Check your email for the confirmation link."
 msgstr "Vérifiez vos courriels pour y trouver le lien de confirmation."
 
-#: .././inc/modules/lost-password.php:38
+#: .././inc/modules/lost-password.php:40
 msgid "Your account could not be found."
 msgstr "Votre compte est introuvable."
 
-#: .././inc/modules/lost-password.php:41
+#: .././inc/modules/lost-password.php:43
 msgid "Reset password failed."
 msgstr "Échec de la réinitialisation du mot de passe."
 
-#: .././inc/modules/lost-password.php:69
+#: .././inc/modules/lost-password.php:74
 msgid "Username or Email Address"
 msgstr "Identifiant ou adresse email"
 
-#: .././inc/modules/lost-password.php:75
+#: .././inc/modules/lost-password.php:80
 msgid "Get New Password"
 msgstr "Obtenir un nouveau mot de passe"
 
-#: .././inc/modules/register.php:88
+#: .././inc/modules/register.php:97
 msgid "Registration confirmation will be emailed to you."
 msgstr "La confirmation d’inscription vous sera envoyée par courriel."
 
-#: .././inc/modules/register.php:95
+#: .././inc/modules/register.php:103
 msgid "This username already exists."
 msgstr "Ce nom d’utilisateur existe déjà."
 
-#: .././inc/modules/register.php:98
+#: .././inc/modules/register.php:106
 msgid "This email is already registered."
 msgstr "Cet e-mail est déjà enregistré."
 
-#: .././inc/modules/register.php:101
+#: .././inc/modules/register.php:109
 msgid "This username contains invalid characters."
 msgstr "Ce nom d’utilisateur contient des caractères non valides."
 
-#: .././inc/modules/register.php:104
+#: .././inc/modules/register.php:112
 msgid "Registration failed."
 msgstr "Échec de l’inscription."
 
-#: .././inc/modules/register.php:151
+#: .././inc/modules/register.php:161
 msgid "Password"
 msgstr "Mot de passe"
 
-#: .././inc/modules/register.php:160
+#: .././inc/modules/register.php:170
 msgid "Register"
 msgstr "S'inscrire"
 
-#: .././inc/pages.php:90
+#: .././inc/pages.php:91
 msgid "Log out"
 msgstr "Se déconnecter"
 
-#: .././inc/user.php:10
+#: .././inc/user.php:11
 msgid "First name"
 msgstr "Prénom"
 
-#: .././inc/user.php:13
+#: .././inc/user.php:14
 msgid "Last name"
 msgstr "Nom"
+
+#: .././wpu_extranet.php:52
+msgid "Simple toolbox to create an extranet or a customer account"
+msgstr "Boîte à outils simple pour créer un extranet ou un compte client"
 
 #~ msgid "Enter your current password :"
 #~ msgstr "Entrez votre mot de passe actuel :"

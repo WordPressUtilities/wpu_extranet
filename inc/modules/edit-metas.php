@@ -45,12 +45,16 @@ function wpu_extranet_update_metas__action() {
 
     $upload_avatar = wpu_extranet_update_metas__action__avatar($user_id);
 
-    $html_return = '';
     if ($has_update || $upload_avatar) {
-        $html_return = '<p class="extranet-message extranet-message--success form-password-success">' . __('Profile successfully updated!', 'wpu_extranet') . '</p>';
+        return wpuextranet_get_html_errors(array(
+            __('Profile successfully updated!', 'wpu_extranet')
+        ), array(
+            'form_id' => 'editmetas',
+            'type' => 'success'
+        ));
     }
 
-    return $html_return;
+    return '';
 }
 
 function wpu_extranet_update_metas__action__avatar($user_id) {
@@ -143,7 +147,7 @@ EOT;
     }
     $html .= wpu_extranet__display_field('wpuextranet_avatar', array(
         'label' => __('Avatar', 'wpu_extranet'),
-        'before_content' => $avatar_script.'<div class="avatar-grid"><div>' . $avatar_img . '</div><div>',
+        'before_content' => $avatar_script . '<div class="avatar-grid"><div>' . $avatar_img . '</div><div>',
         'after_content' => '<small id="wpu-extranet-avatar-message">' . $avatar_message . '</small></div></div>',
         'attributes' => 'accept="image/png, image/jpg, image/jpeg"',
         'type' => 'file',

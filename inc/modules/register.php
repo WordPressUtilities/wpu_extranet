@@ -62,10 +62,16 @@ function wpu_extranet_register__action() {
         return '';
     }
 
+    $messages = array();
+
     /* Checked honeypot */
     $honeypot_id = wpu_extranet_register_get_honeypot_id();
     if (isset($_POST[$honeypot_id]) && $_POST[$honeypot_id] == 1) {
         return '';
+    }
+
+    if(isset($_POST['user_email'])){
+        $messages = apply_filters('wpu_extranet__email__validation', $messages, $_POST['user_email']);
     }
 
     $register_success_user_id = false;
@@ -84,30 +90,33 @@ function wpu_extranet_register__action() {
         }
     }
 
-    $html_return = '';
+    $return_type = 'error';
+
     if (isset($_GET['register']) && $_GET['register'] == 'success') {
-        $html_return .= '<p class="extranet-message extranet-message--success form-register-success">' . __('Registration confirmation will be emailed to you.', 'wpu_extranet') . '</p>';
+        $return_type = 'success';
+        $messages[] = __('Registration confirmation will be emailed to you.', 'wpu_extranet');
     }
 
     if (isset($_GET['registererror'])) {
-        $html_return .= '<p class="extranet-message extranet-message--error form-register-error"><strong class="error">' . __('Error:', 'wpu_extranet') . '</strong> ';
         switch ($_GET['registererror']) {
         case '1':
-            $html_return .= __('This username already exists.', 'wpu_extranet');
+            $messages[] = __('This username already exists.', 'wpu_extranet');
             break;
         case '2':
-            $html_return .= __('This email is already registered.', 'wpu_extranet');
+            $messages[] = __('This email is already registered.', 'wpu_extranet');
             break;
         case '3':
-            $html_return .= __('This username contains invalid characters.', 'wpu_extranet');
+            $messages[] = __('This username contains invalid characters.', 'wpu_extranet');
             break;
         default:
-            $html_return .= __('Registration failed.', 'wpu_extranet');
+            $messages[] = __('Registration failed.', 'wpu_extranet');
         }
-        $html_return .= '</p>';
     }
 
-    return $html_return;
+    return wpuextranet_get_html_errors($messages, array(
+        'form_id' => 'register',
+        'type' => $return_type
+    ));
 }
 
 /* Form HTML
