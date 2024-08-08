@@ -19,7 +19,7 @@ function wpu_extranet_change_password__action() {
         return '';
     }
 
-    if (!isset($_POST['wpuextranet_changepassword']) || !wp_verify_nonce($_POST['wpuextranet_changepassword'], 'wpuextranet_changepassword_action')) {
+    if (!isset($_POST['wpuextranet_changepasswordform']) || !wp_verify_nonce($_POST['wpuextranet_changepasswordform'], 'wpuextranet_changepasswordform_action')) {
         return '';
     }
 
@@ -82,39 +82,30 @@ function wpu_extranet_change_password__form($args = array()) {
     if (!isset($args['before_fields'])) {
         $args['before_fields'] = '';
     }
-    $html = '';
 
-    $settings = wpu_extranet_get_skin_settings();
-
-    $html .= '<div class="' . $settings['form_wrapper_classname'] . ' form-changepassword-wrapper">';
-    $html .= '<h3>' . __('Change password', 'wpu_extranet') . '</h3>';
-    $html .= '<form name="changepasswordform" id="changepasswordform" action="' . get_permalink() . '#changepasswordform" method="post">';
-    $html .= $args['before_fields'];
-    $html .= '<ul class="' . $settings['form_items_classname'] . '">';
-    $html .= wpu_extranet__display_field('current_password', array(
+    $fields = array();
+    $fields['current_password'] = array(
         'type' => 'password',
         'attributes' => 'minlength="6" autocomplete="off" required="required"',
         'label' => __('Enter your current password', 'wpu_extranet')
-    ));
-    $html .= wpu_extranet__display_field('new_password', array(
+    );
+    $fields['new_password'] = array(
         'type' => 'password',
         'attributes' => 'minlength="6" autocomplete="off" required="required"',
         'label' => __('New password', 'wpu_extranet')
-    ));
-    $html .= wpu_extranet__display_field('confirm_new_password', array(
+    );
+    $fields['confirm_new_password'] = array(
         'type' => 'password',
         'attributes' => 'minlength="6" autocomplete="off" required="required"',
         'label' => __('Confirm new password', 'wpu_extranet')
-    ));
-    $html .= '<li class="' . $settings['form_box_submit_classname'] . '">';
-    $html .= wp_nonce_field('wpuextranet_changepassword_action', 'wpuextranet_changepassword', true, false);
-    $html .= '<button class="' . $settings['form_submit_button_classname'] . '" type="submit"><span>' . __('Change password', 'wpu_extranet') . '</span></button>';
-    $html .= '</li>';
-    $html .= '</ul>';
-    $html .= '</form>';
-    $html .= '</div>';
+    );
 
-    return $html;
+    return wpu_extranet_get_form_html('changepasswordform', $fields, array(
+        'before_fields' => $args['before_fields'],
+        'form_action' => get_permalink() . '#changepasswordform',
+        'form_title' => __('Change password', 'wpu_extranet'),
+        'form_submit' => __('Change password', 'wpu_extranet')
+    ));
 }
 
 /* ----------------------------------------------------------

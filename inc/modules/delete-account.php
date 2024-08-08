@@ -32,7 +32,7 @@ function wpu_extranet_delete_account__action() {
         return '';
     }
 
-    if (!isset($_POST['wpuextranet_delete_account']) || !wp_verify_nonce($_POST['wpuextranet_delete_account'], 'wpuextranet_delete_account_action')) {
+    if (!isset($_POST['wpuextranet_deleteaccountform']) || !wp_verify_nonce($_POST['wpuextranet_deleteaccountform'], 'wpuextranet_deleteaccountform_action')) {
         return '';
     }
 
@@ -100,27 +100,22 @@ function wpu_extranet_delete_account__form($args = array()) {
         ));
     }
 
+    $fields = array();
     $settings = wpu_extranet_get_skin_settings();
-    $html .= '<div class="' . $settings['form_wrapper_classname'] . ' form-delete_account-wrapper">';
-    $html .= '<h3>' . __('Delete your account', 'wpu_extranet') . '</h3>';
-    $html .= '<form name="delete_accountform" id="delete_accountform" action="' . get_permalink() . '#delete_accountform" method="post">';
-    $html .= $args['before_fields'];
     if ($user_can_delete_account) {
-        $html .= '<ul class="' . $settings['form_items_classname'] . '">';
-        $html .= wpu_extranet__display_field('current_password', array(
+        $fields['current_password'] = array(
             'type' => 'password',
             'attributes' => 'minlength="6" autocomplete="off" required="required"',
             'label' => __('Enter your current password', 'wpu_extranet')
-        ));
-        $html .= '<li class="' . $settings['form_box_submit_classname'] . '">';
-        $html .= wp_nonce_field('wpuextranet_delete_account_action', 'wpuextranet_delete_account', true, false);
-        $html .= '<button class="' . $settings['form_submit_button_classname'] . '" type="submit"><span>' . __('Delete your account', 'wpu_extranet') . '</span></button>';
+        );
     }
-    $html .= '</li>';
-    $html .= '</ul>';
-    $html .= '</form>';
-    $html .= '</div>';
-    return $html;
+
+    return wpu_extranet_get_form_html('deleteaccountform', $fields, array(
+        'before_fields' => $args['before_fields'],
+        'form_action' => get_permalink() . '#deleteaccountform',
+        'form_title' => __('Delete your account', 'wpu_extranet'),
+        'form_submit' => __('Delete your account', 'wpu_extranet')
+    ));
 }
 
 /* ----------------------------------------------------------

@@ -56,6 +56,9 @@ function wpu_extranet__display_field($field_id, $field) {
     if (!isset($field['value'])) {
         $field['value'] = '';
     }
+    if (!isset($field['options']) || !is_array($field['options'])) {
+        $field['options'] = array();
+    }
     if (!isset($field['attributes'])) {
         $field['attributes'] = '';
     }
@@ -73,7 +76,27 @@ function wpu_extranet__display_field($field_id, $field) {
     $html .= '<li class="' . $settings['form_box_classname'] . '">';
     $html .= $field['before_content'];
     $html .= '<label for="' . $field_id . '">' . $field['label'] . ' :</label>';
-    $html .= '<input ' . $field['attributes'] . ' type="' . $field['type'] . '" name="' . $field_id . '" value="' . esc_attr($field['value']) . '" id="' . $field_id . '" class="input" size="20" autocapitalize="off" />';
+    switch ($field['type']) {
+    case 'multi-checkbox':
+        if(!is_array($field['value'])) {
+            $field['value'] = array();
+        }
+        $html .= '<ul>';
+        foreach ($field['options'] as $option_id => $option) {
+            $html .= '<li>';
+            $html .= '<input ' . $field['attributes'] . ' type="checkbox" name="' . $field_id . '[]" value="' . $option_id . '" id="' . $field_id . '_' . $option_id . '" ' . (in_array($option_id, $field['value']) ? 'checked="checked"' : '') . ' />';
+            $html .= '<label for="' . $field_id . '_' . $option_id . '">' . esc_html($option) . '</label>';
+            $html .= '</li>';
+        }
+        $html .= '</ul>';
+        break;
+    case 'textarea':
+        $html .= '<textarea ' . $field['attributes'] . ' name="' . $field_id . '" id="' . $field_id . '" class="input" autocapitalize="off">' . esc_textarea($field['value']) . '</textarea>';
+        break;
+    default:
+        $html .= '<input ' . $field['attributes'] . ' type="' . $field['type'] . '" name="' . $field_id . '" value="' . esc_attr($field['value']) . '" id="' . $field_id . '" class="input" size="20" autocapitalize="off" />';
+    }
+
     $html .= $field['after_content'];
     $html .= '</li>';
     return $html;
