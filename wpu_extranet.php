@@ -1,33 +1,41 @@
 <?php
+defined('ABSPATH') || die;
 
 /*
 Plugin Name: WPU Extranet
 Description: Simple toolbox to create an extranet or a customer account
-Version: 0.6.2
+Version: 0.7.0
 Author: Darklg
 Author URI: https://darklg.me/
+Text Domain: wpu_extranet
+Domain Path: /lang
+Requires at least: 6.2
+Requires PHP: 8.0
+Network: Optional
 License: MIT License
-License URI: http://opensource.org/licenses/MIT
+License URI: https://opensource.org/licenses/MIT
 Plugin URI: https://github.com/WordPressUtilities/wpu_extranet
+Update URI: https://github.com/WordPressUtilities/wpu_extranet
 */
 
 /* ----------------------------------------------------------
   Settings
 ---------------------------------------------------------- */
 
-include dirname(__FILE__) . '/inc/notifications.php';
-include dirname(__FILE__) . '/inc/pages.php';
-include dirname(__FILE__) . '/inc/permissions.php';
-include dirname(__FILE__) . '/inc/user.php';
+require_once __DIR__ . '/inc/notifications.php';
+require_once __DIR__ . '/inc/pages.php';
+require_once __DIR__ . '/inc/permissions.php';
+require_once __DIR__ . '/inc/user.php';
 
 /* ----------------------------------------------------------
   Modules
 ---------------------------------------------------------- */
 
-include dirname(__FILE__) . '/inc/modules/change-password.php';
-include dirname(__FILE__) . '/inc/modules/edit-metas.php';
-include dirname(__FILE__) . '/inc/modules/lost-password.php';
-include dirname(__FILE__) . '/inc/modules/register.php';
+require_once __DIR__ . '/inc/modules/change-password.php';
+require_once __DIR__ . '/inc/modules/change-email.php';
+require_once __DIR__ . '/inc/modules/edit-metas.php';
+require_once __DIR__ . '/inc/modules/lost-password.php';
+require_once __DIR__ . '/inc/modules/register.php';
 
 /* ----------------------------------------------------------
   Translation

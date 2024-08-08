@@ -1,4 +1,5 @@
 <?php
+defined('ABSPATH') || die;
 
 /* Failed login in front : redirect to the home page
 -------------------------- */

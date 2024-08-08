@@ -1,4 +1,5 @@
 <?php
+defined('ABSPATH') || die;
 
 /* ----------------------------------------------------------
   Metas
@@ -62,6 +63,10 @@ function wpu_extranet_update_metas__action__avatar($user_id) {
             wp_delete_attachment($avatar_id, true);
         }
         return true;
+    }
+
+    if (!isset($_FILES["wpuextranet_avatar"]) || empty($_FILES["wpuextranet_avatar"]['tmp_name'])) {
+        return false;
     }
 
     /* Check attachment types */

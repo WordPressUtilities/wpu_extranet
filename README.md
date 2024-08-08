@@ -1,5 +1,7 @@
 # WPU Extranet
 
+[![PHP workflow](https://github.com/WordPressUtilities/wpu_extranet/actions/workflows/php.yml/badge.svg 'PHP workflow')](https://github.com/WordPressUtilities/wpu_extranet/actions)
+
 Simple toolbox to create an extranet or a customer account.
 
 ## Todo

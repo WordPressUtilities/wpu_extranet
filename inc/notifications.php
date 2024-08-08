@@ -1,4 +1,5 @@
 <?php
+defined('ABSPATH') || die;
 
 /* ----------------------------------------------------------
   Disable password change mail
