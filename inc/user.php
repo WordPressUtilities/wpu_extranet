@@ -53,34 +53,38 @@ function wpu_extranet__user_register_fields() {
 
 function wpu_extranet__display_field($field_id, $field) {
     $html = '';
-    if (!isset($field['value'])) {
-        $field['value'] = '';
-    }
+    $defaults = array(
+        'label' => $field_id,
+        'value' => '',
+        'options' => array(),
+        'attributes' => '',
+        'type' => 'text',
+        'before_content' => '',
+        'after_content' => '',
+        'grid_start' => false,
+        'grid_end' => false
+    );
+    $field = array_merge($defaults, $field);
     if (!isset($field['options']) || !is_array($field['options'])) {
         $field['options'] = array();
     }
-    if (!isset($field['attributes'])) {
-        $field['attributes'] = '';
-    }
-    if (!isset($field['type'])) {
-        $field['type'] = 'text';
-    }
-    if (!isset($field['before_content'])) {
-        $field['before_content'] = '';
-    }
-    if (!isset($field['after_content'])) {
-        $field['after_content'] = '';
-    }
+
     $field = apply_filters('wpu_extranet__display_field__field', $field, $field_id);
     $settings = wpu_extranet_get_skin_settings();
+    if ($field['grid_start']) {
+        $html .= '<li><ul class="' . $settings['form_grid_classname'] . '">';
+    }
     $html .= '<li class="' . $settings['form_box_classname'] . '">';
     $html .= $field['before_content'];
-    $html .= '<label for="' . $field_id . '">' . $field['label'] . ' :</label>';
+    $label = '<label for="' . $field_id . '">' . $field['label'] . ' :</label>';
+    $is_radio_check = in_array($field['type'], array('radio', 'checkbox'));
     switch ($field['type']) {
     case 'multi-checkbox':
-        if(!is_array($field['value'])) {
+        $field['value'] = explode(';', $field['value']);
+        if (!is_array($field['value'])) {
             $field['value'] = array();
         }
+        $html .= $label;
         $html .= '<ul>';
         foreach ($field['options'] as $option_id => $option) {
             $html .= '<li>';
@@ -90,15 +94,28 @@ function wpu_extranet__display_field($field_id, $field) {
         }
         $html .= '</ul>';
         break;
+
     case 'textarea':
+        $html .= $label;
         $html .= '<textarea ' . $field['attributes'] . ' name="' . $field_id . '" id="' . $field_id . '" class="input" autocapitalize="off">' . esc_textarea($field['value']) . '</textarea>';
         break;
     default:
-        $html .= '<input ' . $field['attributes'] . ' type="' . $field['type'] . '" name="' . $field_id . '" value="' . esc_attr($field['value']) . '" id="' . $field_id . '" class="input" size="20" autocapitalize="off" />';
+        $value = $field['value'];
+        $checked = '';
+        if ($field['type'] == 'checkbox') {
+            $value = '1';
+            $checked = $field['value'] == '1' ? 'checked="checked"' : '';
+        }
+        $html .= $is_radio_check ? '' : $label;
+        $html .= '<input ' . $field['attributes'] . ' type="' . $field['type'] . '" name="' . $field_id . '" ' . $checked . ' value="' . esc_attr($value) . '" id="' . $field_id . '" class="input" size="20" autocapitalize="off" />';
+        $html .= $is_radio_check ? $label : '';
     }
 
     $html .= $field['after_content'];
     $html .= '</li>';
+    if ($field['grid_end']) {
+        $html .= '</ul></li>';
+    }
     return $html;
 }
 
@@ -144,3 +161,77 @@ add_filter('get_avatar_url', function ($avatar_url, $id_or_email, $args) {
 
     return $avatar_url;
 }, 1, 3);
+
+/* ----------------------------------------------------------
+  Update fields
+---------------------------------------------------------- */
+
+function wpu_extranet__user__save_fields($fields, $args = array()) {
+    if (empty($_POST) || !is_array($fields)) {
+        return $fields;
+    }
+    $defaults = array(
+        'form_id' => 'editmetas',
+        'user_id' => get_current_user_id()
+    );
+    $args = wp_parse_args($args, $defaults);
+    $errors = array();
+    $fields = apply_filters('wpu_extranet__user__save_fields', $fields, $args);
+    /* @TODO nonce */
+    foreach ($fields as $field_id => $field) {
+        $check_field_id = $field_id;
+        $value = false;
+        if (isset($_POST[$field_id])) {
+            $value = $_POST[$field_id];
+        }
+        if ($field['type'] == 'checkbox') {
+            $value = isset($_POST[$field_id]) ? $_POST[$field_id] : '0';
+        }
+        if ($field['type'] == 'multi-checkbox') {
+            $value = array();
+            foreach ($field['options'] as $option_id => $option) {
+                if (isset($_POST[$field_id]) && in_array($option_id, $_POST[$field_id])) {
+                    $value[] = $option_id;
+                }
+            }
+            $value = implode(';', $value);
+        }
+        if ($value === false) {
+            continue;
+        }
+
+        $value = sanitize_text_field($value);
+
+        if (isset($field['required']) && $field['required'] && empty($value)) {
+            $errors[] = sprintf(__('The field %s is required.', 'wpu_extranet'), $field['label']);
+            continue;
+        }
+        if (isset($field['minlength']) && strlen($value) < $field['minlength']) {
+            $errors[] = sprintf(__('The field %s must be at least %s characters.', 'wpu_extranet'), $field['label'], $field['minlength']);
+            continue;
+        }
+        if (isset($field['maxlength']) && strlen($value) > $field['maxlength']) {
+            $errors[] = sprintf(__('The field %s must be at most %s characters.', 'wpu_extranet'), $field['label'], $field['maxlength']);
+            continue;
+        }
+        if (isset($field['type']) && $field['type'] == 'email' && !is_email($value)) {
+            $errors[] = sprintf(__('The field %s must be a valid email.', 'wpu_extranet'), $field['label']);
+            continue;
+        }
+
+        if (!empty($errors)) {
+            continue;
+        }
+        update_user_meta($args['user_id'], $field_id, $value);
+    }
+
+    $return_type = 'error';
+    if (empty($errors)) {
+        $return_type = 'success';
+        $errors[] = __('Fields successfully updated!', 'wpu_extranet');
+    }
+    return wpuextranet_get_html_errors($errors, array(
+        'form_id' => $args['form_id'],
+        'type' => $return_type
+    ));
+}

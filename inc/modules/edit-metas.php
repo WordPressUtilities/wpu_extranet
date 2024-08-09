@@ -165,15 +165,6 @@ EOT;
         'attributes' => 'readonly',
         'value' => $user->user_email
     ));
-    $html .= wpu_extranet__display_field('prefs_pwet', array(
-        'label' => __('Pwet', 'wpu_extranet'),
-        'type' => 'multi-checkbox',
-        'options' => array(
-            '1' => __('Yes', 'wpu_extranet'),
-            '0' => __('No', 'wpu_extranet')
-        ),
-        'attributes' => 'readonly',
-    ));
 
     /* Custom fields */
     foreach ($extra_fields as $field_id => $field):

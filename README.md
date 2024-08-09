@@ -67,7 +67,7 @@ add_filter('wpu_extranet__get_register_page', function ($link) {
 
 #### Register
 
-```
+```php
 <?php
 /* Template Name: Extranet - Register */
 $html_return_register = wpu_extranet_register__action();
@@ -91,7 +91,7 @@ get_footer();
 
 #### Lost Password
 
-```
+```php
 <?php
 /* Template Name: Extranet - Lost Password */
 $html_return_register = wpu_extranet_lostpassword__action();
@@ -105,6 +105,44 @@ get_header();
 echo wpu_extranet_lostpassword__form(array(
     'before_fields' => $html_return_register
 ));
+?>
+        </div>
+    </div>
+</div>
+<?php
+get_footer();
+
+```
+
+#### Custom User Form
+
+```php
+<?php
+$form_infos = array(
+    'form_id' => 'editmetasnewsletter'
+);
+$form_fields = array(
+    'newsletter_ok' => array(
+        'type' => 'checkbox',
+        'label' => __('Subscribe to the newsletter', 'wpu_extranet')
+    )
+);
+$form_settings = array(
+    'before_fields' => $html_return_form,
+    'form_action' => get_permalink() . '#' . $form_infos['form_id'],
+    'form_title' => __('Newsletter', 'wpu_extranet'),
+    'form_submit' => __('Save', 'wpu_extranet'),
+    'load_user_values' => true
+)
+$html_return_form = wpu_extranet__user__save_fields($form_fields, $form_infos);
+get_header();
+?>
+<div class="centered-container section cc-content-register">
+    <div class="content-register section">
+        <h1 class="content-register__title"><?php the_title();?></h1>
+        <div class="content-register__content">
+<?php
+echo wpu_extranet_get_form_html($form_infos['form_id'], $form_fields, $form_settings);
 ?>
         </div>
     </div>

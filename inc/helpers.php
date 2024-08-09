@@ -11,6 +11,7 @@ function wpu_extranet_get_form_html($form_id, $fields = array(), $args = array()
         'after_fields' => '',
         'hidden_fields' => array(),
         'has_honey_pot' => false,
+        'load_user_values' => false,
         'form_action' => '',
         'form_title' => '',
         'form_submit' => __('Submit', 'wpu_extranet')
@@ -30,6 +31,9 @@ function wpu_extranet_get_form_html($form_id, $fields = array(), $args = array()
     $html .= $args['before_fields'];
     $html .= '<ul class="' . $settings['form_items_classname'] . '">';
     foreach ($fields as $field_id => $field) {
+        if($args['load_user_values']) {
+            $field['value'] = get_user_meta(get_current_user_id(), $field_id, true);
+        }
         $html .= wpu_extranet__display_field($field_id, $field);
     }
     $html .= $args['after_fields'];

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WPU Extranet\n"
-"POT-Creation-Date: 2024-08-08 16:40+0200\n"
+"POT-Creation-Date: 2024-08-09 17:26+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Darklg <darklg.blog@gmail.com>\n"
 "Language-Team: \n"
@@ -15,7 +15,11 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-SearchPath-0: ../.\n"
 
-#: .././inc/helpers.php:21
+#: .././inc/helpers.php:17
+msgid "Submit"
+msgstr "Envoyer"
+
+#: .././inc/helpers.php:84
 msgid "Error:"
 msgstr "Erreur :"
 
@@ -44,21 +48,21 @@ msgstr "L’e-mail est déjà utilisé."
 msgid "Email successfully updated!"
 msgstr "L’e-mail a été mis à jour avec succès !"
 
-#: .././inc/modules/change-email.php:101 .././inc/modules/change-email.php:123
-msgid "Change email"
-msgstr "Changer d'adresse e-mail"
-
-#: .././inc/modules/change-email.php:108
+#: .././inc/modules/change-email.php:100
 msgid "Your current email"
 msgstr "Votre adresse e-mail actuelle"
 
-#: .././inc/modules/change-email.php:114
+#: .././inc/modules/change-email.php:106
 msgid "New email"
 msgstr "Nouvel e-mail"
 
-#: .././inc/modules/change-email.php:119
+#: .././inc/modules/change-email.php:111
 msgid "Confirm new email"
 msgstr "Confirmez votre nouvel e-mail"
+
+#: .././inc/modules/change-email.php:117 .././inc/modules/change-email.php:118
+msgid "Change email"
+msgstr "Changer d'adresse e-mail"
 
 #: .././inc/modules/change-password.php:46
 msgid "Current password is incorrect."
@@ -77,22 +81,22 @@ msgid "Password successfully changed!"
 msgstr "Mot de passe changé avec succès !"
 
 #: .././inc/modules/change-password.php:90
-#: .././inc/modules/change-password.php:111
-msgid "Change password"
-msgstr "Changer le mot de passe"
-
-#: .././inc/modules/change-password.php:97
-#: .././inc/modules/delete-account.php:113
+#: .././inc/modules/delete-account.php:109
 msgid "Enter your current password"
 msgstr "Veuillez saisir votre mot de passe actuel"
 
-#: .././inc/modules/change-password.php:102
+#: .././inc/modules/change-password.php:95
 msgid "New password"
 msgstr "Nouveau mot de passe"
 
-#: .././inc/modules/change-password.php:107
+#: .././inc/modules/change-password.php:100
 msgid "Confirm new password"
 msgstr "Confirmer le nouveau mot de passe"
+
+#: .././inc/modules/change-password.php:106
+#: .././inc/modules/change-password.php:107
+msgid "Change password"
+msgstr "Changer le mot de passe"
 
 #: .././inc/modules/delete-account.php:13
 msgid "You can not delete this type of account."
@@ -102,7 +106,7 @@ msgstr "Vous ne pouvez pas supprimer ce type de compte."
 msgid "Invalid password."
 msgstr "Mot de passe invalide."
 
-#: .././inc/modules/delete-account.php:105
+#: .././inc/modules/delete-account.php:116
 #: .././inc/modules/delete-account.php:117
 msgid "Delete your account"
 msgstr "Supprimer votre compte"
@@ -200,7 +204,31 @@ msgstr "Prénom"
 msgid "Last name"
 msgstr "Nom"
 
-#: .././wpu_extranet.php:52
+#: .././inc/user.php:206
+#, php-format
+msgid "The field %s is required."
+msgstr "Le champ %s est obligatoire."
+
+#: .././inc/user.php:210
+#, php-format
+msgid "The field %s must be at least %s characters."
+msgstr "Le champ %s doit comporter au moins %s caractères."
+
+#: .././inc/user.php:214
+#, php-format
+msgid "The field %s must be at most %s characters."
+msgstr "Le champ %s doit comporter au maximum %s caractères."
+
+#: .././inc/user.php:218
+#, php-format
+msgid "The field %s must be a valid email."
+msgstr "Le champ %s doit être un e-mail valide."
+
+#: .././inc/user.php:231
+msgid "Fields successfully updated!"
+msgstr "Champs mis à jour avec succès !"
+
+#: .././wpu_extranet.php:54
 msgid "Simple toolbox to create an extranet or a customer account"
 msgstr "Boîte à outils simple pour créer un extranet ou un compte client"
 

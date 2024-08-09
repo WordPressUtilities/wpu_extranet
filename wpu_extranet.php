@@ -4,7 +4,7 @@ defined('ABSPATH') || die;
 /*
 Plugin Name: WPU Extranet
 Description: Simple toolbox to create an extranet or a customer account
-Version: 0.9.0
+Version: 0.10.0
 Author: Darklg
 Author URI: https://darklg.me/
 Text Domain: wpu_extranet
@@ -17,6 +17,8 @@ License URI: https://opensource.org/licenses/MIT
 Plugin URI: https://github.com/WordPressUtilities/wpu_extranet
 Update URI: https://github.com/WordPressUtilities/wpu_extranet
 */
+
+define('WPU_EXTRANET_VERSION', '0.10.0');
 
 /* ----------------------------------------------------------
   Settings
@@ -61,6 +63,7 @@ function wpu_extranet_get_skin_settings() {
         'form_wrapper_classname' => 'form-extranet',
         'form_items_classname' => 'cssc-form cssc-form--extranet',
         'form_box_classname' => 'box box--extranet',
+        'form_grid_classname' => 'grid-extranet',
         'form_box_submit_classname' => 'box box--extranet box--submit',
         'form_submit_button_classname' => 'cssc-button cssc-button--extranet'
     );
