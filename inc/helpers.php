@@ -20,6 +20,14 @@ function wpu_extranet_get_form_html($form_id, $fields = array(), $args = array()
     if (!is_array($args['hidden_fields'])) {
         $args['hidden_fields'] = array();
     }
+
+    $form_attributes = '';
+    foreach ($fields as $field_id => $field) {
+        if (isset($field['type']) && $field['type'] == 'file') {
+            $form_attributes .= ' enctype="multipart/form-data"';
+        }
+    }
+
     $settings = wpu_extranet_get_skin_settings();
     $html = '';
 
@@ -27,11 +35,11 @@ function wpu_extranet_get_form_html($form_id, $fields = array(), $args = array()
     if ($args['form_title']) {
         $html .= '<h3>' . $args['form_title'] . '</h3>';
     }
-    $html .= '<form name="' . $form_id . '" id="' . $form_id . '" action="' . $args['form_action'] . '" method="post">';
+    $html .= '<form name="' . $form_id . '" id="' . $form_id . '" action="' . $args['form_action'] . '" method="post" ' . $form_attributes . '>';
     $html .= $args['before_fields'];
     $html .= '<ul class="' . $settings['form_items_classname'] . '">';
     foreach ($fields as $field_id => $field) {
-        if($args['load_user_values']) {
+        if ($args['load_user_values']) {
             $field['value'] = get_user_meta(get_current_user_id(), $field_id, true);
         }
         $html .= wpu_extranet__display_field($field_id, $field);

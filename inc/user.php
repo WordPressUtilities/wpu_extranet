@@ -168,7 +168,7 @@ add_filter('get_avatar_url', function ($avatar_url, $id_or_email, $args) {
 
 function wpu_extranet__user__save_fields($fields, $args = array()) {
     if (empty($_POST) || !is_array($fields)) {
-        return $fields;
+        return false;
     }
     $defaults = array(
         'form_id' => 'editmetas',

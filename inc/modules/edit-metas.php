@@ -115,13 +115,6 @@ function wpu_extranet_update_metas__form($args = array()) {
 
     $user = wp_get_current_user();
 
-    $html = '';
-    $html .= '<div class="' . $settings['form_wrapper_classname'] . ' form-editmetas-wrapper">';
-    $html .= '<h3>' . __('Infos', 'wpu_extranet') . '</h3>';
-    $html .= '<form name="editmetasform" id="editmetasform" enctype="multipart/form-data" action="' . get_permalink() . '" method="post">';
-    $html .= '<ul class="' . $settings['form_items_classname'] . '">';
-    $html .= $args['before_fields'];
-
     /* Avatar */
     $avatar_script = <<<EOT
 <script>
@@ -145,26 +138,28 @@ EOT;
     if ($avatar_id) {
         $avatar_message = '<input type="checkbox" id="wpuextranet_delete_avatar" name="delete_avatar" value="1" /><label for="wpuextranet_delete_avatar">' . __('Delete this avatar', 'wpu_extranet') . '</label>';
     }
-    $html .= wpu_extranet__display_field('wpuextranet_avatar', array(
+
+    $fields = array();
+    $fields['wpuextranet_avatar'] = array(
         'label' => __('Avatar', 'wpu_extranet'),
         'before_content' => $avatar_script . '<div class="avatar-grid"><div>' . $avatar_img . '</div><div>',
         'after_content' => '<small id="wpu-extranet-avatar-message">' . $avatar_message . '</small></div></div>',
         'attributes' => 'accept="image/png, image/jpg, image/jpeg"',
         'type' => 'file',
         'value' => $user->user_email
-    ));
+    );
 
     /* Default fields */
-    $html .= wpu_extranet__display_field('username', array(
+    $fields['username'] = array(
         'label' => __('Username', 'wpu_extranet'),
         'attributes' => 'readonly',
         'value' => $user->display_name
-    ));
-    $html .= wpu_extranet__display_field('email', array(
+    );
+    $fields['email'] = array(
         'label' => __('Email', 'wpu_extranet'),
         'attributes' => 'readonly',
         'value' => $user->user_email
-    ));
+    );
 
     /* Custom fields */
     foreach ($extra_fields as $field_id => $field):
@@ -172,17 +167,16 @@ EOT;
             continue;
         }
         $field['value'] = get_user_meta(get_current_user_id(), $field_id, 1);
-        $html .= wpu_extranet__display_field($field_id, $field);
+        $fields[$field_id] = $field;
     endforeach;
 
-    $html .= '<li class="' . $settings['form_box_submit_classname'] . '">';
-    $html .= wp_nonce_field('wpuextranet_editmetas_action', 'wpuextranet_editmetas', true, false);
-    $html .= '<button class="' . $settings['form_submit_button_classname'] . '" type="submit"><span>' . __('Edit my infos', 'wpu_extranet') . '</span></button>';
-    $html .= '</li>';
-    $html .= '</ul>';
-    $html .= '</form>';
-    $html .= '</div>';
-    return $html;
+    return wpu_extranet_get_form_html('editmetas', $fields, array(
+        'before_fields' => $args['before_fields'],
+        'after_fields' => '',
+        'form_action' => get_permalink(),
+        'form_submit' => __('Edit my infos', 'wpu_extranet'),
+        'form_title' => __('Infos', 'wpu_extranet')
+    ));
 }
 
 /* ----------------------------------------------------------
