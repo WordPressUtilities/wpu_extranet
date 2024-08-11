@@ -55,6 +55,8 @@ function wpu_extranet__display_field($field_id, $field) {
     $html = '';
     $defaults = array(
         'label' => $field_id,
+        'required' => false,
+        'readonly' => false,
         'value' => '',
         'options' => array(),
         'attributes' => '',
@@ -67,6 +69,12 @@ function wpu_extranet__display_field($field_id, $field) {
     $field = array_merge($defaults, $field);
     if (!isset($field['options']) || !is_array($field['options'])) {
         $field['options'] = array();
+    }
+    if ($field['readonly']) {
+        $field['attributes'] .= ' readonly="readonly"';
+    }
+    if ($field['required']) {
+        $field['attributes'] .= ' required="required"';
     }
 
     $field = apply_filters('wpu_extranet__display_field__field', $field, $field_id);
@@ -184,6 +192,9 @@ function wpu_extranet__user__save_fields($fields, $args = array()) {
         if (isset($_POST[$field_id])) {
             $value = $_POST[$field_id];
         }
+        if (isset($field['readonly']) && $field['readonly']) {
+            continue;
+        }
         if ($field['type'] == 'checkbox') {
             $value = isset($_POST[$field_id]) ? $_POST[$field_id] : '0';
         }
@@ -196,16 +207,16 @@ function wpu_extranet__user__save_fields($fields, $args = array()) {
             }
             $value = implode(';', $value);
         }
+        if (isset($field['required']) && $field['required'] && empty($value)) {
+            $errors[] = sprintf(__('The field %s is required.', 'wpu_extranet'), $field['label']);
+            continue;
+        }
+
         if ($value === false) {
             continue;
         }
 
         $value = sanitize_text_field($value);
-
-        if (isset($field['required']) && $field['required'] && empty($value)) {
-            $errors[] = sprintf(__('The field %s is required.', 'wpu_extranet'), $field['label']);
-            continue;
-        }
         if (isset($field['minlength']) && strlen($value) < $field['minlength']) {
             $errors[] = sprintf(__('The field %s must be at least %s characters.', 'wpu_extranet'), $field['label'], $field['minlength']);
             continue;
@@ -220,7 +231,7 @@ function wpu_extranet__user__save_fields($fields, $args = array()) {
         }
 
         if (!empty($errors)) {
-            continue;
+            break;
         }
         update_user_meta($args['user_id'], $field_id, $value);
     }
