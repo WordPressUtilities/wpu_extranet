@@ -12,6 +12,7 @@ function wpu_extranet_get_form_html($form_id, $fields = array(), $args = array()
         'hidden_fields' => array(),
         'has_honey_pot' => false,
         'load_user_values' => false,
+        'allow_no_fields' => false,
         'form_action' => '',
         'form_title' => '',
         'form_submit' => __('Submit', 'wpu_extranet')
@@ -46,7 +47,7 @@ function wpu_extranet_get_form_html($form_id, $fields = array(), $args = array()
     }
     $html .= $args['after_fields'];
 
-    if (!empty($fields)) {
+    if (!empty($fields) || $args['allow_no_fields']) {
         $html .= '<li class="' . $settings['form_box_submit_classname'] . '">';
         if ($args['has_honey_pot']) {
             $honeypot_id = wpu_extranet_register_get_honeypot_id();

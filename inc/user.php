@@ -180,11 +180,18 @@ function wpu_extranet__user__save_fields($fields, $args = array()) {
     }
     $defaults = array(
         'form_id' => 'editmetas',
-        'user_id' => get_current_user_id()
+        'user_id' => get_current_user_id(),
+        'callback_before_fields' => false,
+        'callback_after_fields' => false
     );
     $args = wp_parse_args($args, $defaults);
     $errors = array();
     $fields = apply_filters('wpu_extranet__user__save_fields', $fields, $args);
+
+    if ($args['callback_before_fields']) {
+        $errors = call_user_func($args['callback_before_fields'], $errors, $args);
+    }
+
     /* @TODO nonce */
     foreach ($fields as $field_id => $field) {
         $check_field_id = $field_id;
@@ -234,6 +241,10 @@ function wpu_extranet__user__save_fields($fields, $args = array()) {
             break;
         }
         update_user_meta($args['user_id'], $field_id, $value);
+    }
+
+    if ($args['callback_after_fields']) {
+        $errors = call_user_func($args['callback_after_fields'], $errors, $args);
     }
 
     $return_type = 'error';

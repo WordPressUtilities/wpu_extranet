@@ -41,6 +41,11 @@ add_filter('wputh_post_metas_fields', function ($fields) {
         'name' => 'Extranet page',
         'type' => 'checkbox'
     );
+    $fields['is_extranet_hidden'] = array(
+        'box' => 'box_page_extranet',
+        'name' => 'Hidden extranet page',
+        'type' => 'checkbox'
+    );
     return $fields;
 });
 
@@ -68,6 +73,19 @@ function wpu_extranet_get_menu($args = array()) {
     // GET CACHED VALUE
     $posts_extranet = wp_cache_get($cache_id);
     if ($posts_extranet === false) {
+        $hidden_pages = get_posts(array(
+            'post_type' => 'page',
+            'posts_per_page' => -1,
+            'fields' => 'ids',
+            'meta_query' => array(
+                array(
+                    'key' => 'is_extranet_hidden',
+                    'compare' => '1',
+                    'value' => '1'
+                )
+            )
+        ));
+
         // COMPUTE RESULT
         $posts_extranet = get_posts(array(
             'post_type' => 'page',
@@ -77,11 +95,14 @@ function wpu_extranet_get_menu($args = array()) {
                 'key' => 'is_extranet_page',
                 'compare' => '1',
                 'value' => '1'
-            ))
+            )),
+            'post__not_in' => $hidden_pages
         ));
         // CACHE RESULT
         wp_cache_set($cache_id, $posts_extranet, '', $cache_duration);
     }
+
+    $posts_extranet = apply_filters('wpu_extranet_get_menu_posts', $posts_extranet);
 
     $html .= '<ul class="extranet-menu">';
     foreach ($posts_extranet as $p) {
