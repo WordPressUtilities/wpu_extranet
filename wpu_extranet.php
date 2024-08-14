@@ -4,7 +4,7 @@ defined('ABSPATH') || die;
 /*
 Plugin Name: WPU Extranet
 Description: Simple toolbox to create an extranet or a customer account
-Version: 0.11.0
+Version: 0.12.0
 Author: Darklg
 Author URI: https://darklg.me/
 Text Domain: wpu_extranet
@@ -18,7 +18,7 @@ Plugin URI: https://github.com/WordPressUtilities/wpu_extranet
 Update URI: https://github.com/WordPressUtilities/wpu_extranet
 */
 
-define('WPU_EXTRANET_VERSION', '0.11.0');
+define('WPU_EXTRANET_VERSION', '0.12.0');
 
 /* ----------------------------------------------------------
   Settings
@@ -29,6 +29,7 @@ require_once __DIR__ . '/inc/notifications.php';
 require_once __DIR__ . '/inc/pages.php';
 require_once __DIR__ . '/inc/permissions.php';
 require_once __DIR__ . '/inc/user.php';
+require_once __DIR__ . '/inc/form.php';
 
 /* ----------------------------------------------------------
   Modules

@@ -127,7 +127,7 @@ $form_fields = array(
         'label' => __('Subscribe to the newsletter', 'wpu_extranet')
     )
 );
-$html_return_form = wpu_extranet__user__save_fields($form_fields, $form_infos);
+$html_return_form = wpu_extranet__save_fields($form_fields, $form_infos);
 $form_settings = array(
     'before_fields' => $html_return_form,
     'form_action' => get_permalink() . '#' . $form_infos['form_id'],
