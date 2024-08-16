@@ -181,13 +181,18 @@ function wpu_extranet__save_fields($fields, $args = array()) {
     if (empty($_POST) || !is_array($fields)) {
         return false;
     }
+
+    if (!isset($_POST['wpuextranet_' . $args['form_id']]) || !wp_verify_nonce($_POST['wpuextranet_' . $args['form_id']], 'wpuextranet_' . $args['form_id'] . '_action')) {
+        return false;
+    }
+
     $defaults = array(
         'form_id' => 'editmetas',
         'user_id' => get_current_user_id(),
         'callback_before_fields' => false,
         'callback_after_fields' => false
     );
-    $args = wp_parse_args($args, $defaults);
+    $args = array_merge($defaults, $args);
     $errors = array();
     $fields = apply_filters('wpu_extranet__save_fields', $fields, $args);
 
@@ -195,7 +200,6 @@ function wpu_extranet__save_fields($fields, $args = array()) {
         $errors = call_user_func($args['callback_before_fields'], $errors, $args);
     }
 
-    /* @TODO nonce */
     foreach ($fields as $field_id => $field) {
         $check_field_id = $field_id;
         $field = wpu_extranet__correct_field($field, $field_id);
