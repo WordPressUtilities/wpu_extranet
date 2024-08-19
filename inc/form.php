@@ -81,6 +81,7 @@ function wpu_extranet__correct_field($field, $field_id) {
     $defaults = array(
         'label' => $field_id,
         'required' => false,
+        'multiple' => false,
         'readonly' => false,
         'value' => '',
         'options' => array(),
@@ -118,7 +119,7 @@ function wpu_extranet__display_field($field_id, $field) {
     if ($field['grid_start']) {
         $html .= '<li><ul class="' . $settings['form_grid_classname'] . '">';
     }
-    $html .= '<li class="' . $settings['form_box_classname'] . '">';
+    $html .= '<li data-fieldtype="' . esc_attr($field['type']) . '" class="' . $settings['form_box_classname'] . '">';
     $html .= $field['before_content'];
     $label = '<label for="' . $field_id . '">' . $field['label'] . ' :</label>';
     $is_radio_check = in_array($field['type'], array('radio', 'checkbox'));
@@ -140,9 +141,13 @@ function wpu_extranet__display_field($field_id, $field) {
         break;
     case 'select':
         $html .= $label;
-        $html .= '<select ' . $field['attributes'] . ' name="' . $field_id . '" id="' . $field_id . '" >';
+        $html .= '<select  ' . $field['attributes'] . ' ' . ($field['multiple'] ? 'multiple' : '') . ' name="' . $field_id . ($field['multiple'] ? '[]' : '') . '" id="' . $field_id . '" >';
+        $selected_options = array($field['value']);
+        if ($field['multiple']) {
+            $selected_options = explode(';', $field['value']);
+        }
         foreach ($field['options'] as $option_id => $option) {
-            $html .= '<option value="' . $option_id . '" ' . ($field['value'] == $option_id ? 'selected="selected"' : '') . '>' . esc_html($option) . '</option>';
+            $html .= '<option value="' . $option_id . '" ' . (in_array($option_id, $selected_options) ? 'selected="selected"' : '') . '>' . esc_html($option) . '</option>';
         }
         $html .= '</select>';
         break;
@@ -213,7 +218,7 @@ function wpu_extranet__save_fields($fields, $args = array()) {
         if ($field['type'] == 'checkbox') {
             $value = isset($_POST[$field_id]) ? $_POST[$field_id] : '0';
         }
-        if ($field['type'] == 'multi-checkbox') {
+        if ($field['type'] == 'multi-checkbox' || ($field['type'] == 'select' && $field['multiple'])) {
             $value = array();
             foreach ($field['options'] as $option_id => $option) {
                 if (isset($_POST[$field_id]) && in_array($option_id, $_POST[$field_id])) {
@@ -252,7 +257,7 @@ function wpu_extranet__save_fields($fields, $args = array()) {
             $errors[] = sprintf(__('The field %s must be a valid URL.', 'wpu_extranet'), $field['label']);
             continue;
         }
-        if ($field['type'] == 'select' && !isset($field['options'][$value])) {
+        if ($field['type'] == 'select' && !$field['multiple'] && !isset($field['options'][$value])) {
             $errors[] = sprintf(__('The field %s must be a valid option.', 'wpu_extranet'), $field['label']);
             continue;
         }
