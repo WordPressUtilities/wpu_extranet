@@ -113,15 +113,24 @@ function wpu_extranet__display_field($field_id, $field) {
     if ($field['required']) {
         $field['attributes'] .= ' required="required"';
     }
+    $field_display_id = 'f' . uniqid() . '_' . $field_id;
 
     $field = apply_filters('wpu_extranet__display_field__field', $field, $field_id);
     $settings = wpu_extranet_get_skin_settings();
     if ($field['grid_start']) {
         $html .= '<li><ul class="' . $settings['form_grid_classname'] . '">';
     }
-    $html .= '<li data-fieldtype="' . esc_attr($field['type']) . '" class="' . $settings['form_box_classname'] . '">';
+    $html .= '<li data-fieldid="' . esc_attr($field_id) . '" data-fieldtype="' . esc_attr($field['type']) . '" class="' . $settings['form_box_classname'] . '">';
     $html .= $field['before_content'];
-    $label = '<label for="' . $field_id . '">' . $field['label'] . ' :</label>';
+
+    $label_content = $field['label'];
+    if ($field['required']) {
+        $label_content .= ' <span class="required">*</span>';
+    }
+    if ($field['type'] != 'checkbox') {
+        $label_content .= ' :';
+    }
+    $label = '<label for="' . $field_display_id . '">' . $label_content . '</label>';
     $is_radio_check = in_array($field['type'], array('radio', 'checkbox'));
     switch ($field['type']) {
     case 'multi-checkbox':
@@ -133,7 +142,7 @@ function wpu_extranet__display_field($field_id, $field) {
         $html .= '<ul>';
         foreach ($field['options'] as $option_id => $option) {
             $html .= '<li>';
-            $html .= '<input ' . $field['attributes'] . ' type="checkbox" name="' . $field_id . '[]" value="' . $option_id . '" id="' . $field_id . '_' . $option_id . '" ' . (in_array($option_id, $field['value']) ? 'checked="checked"' : '') . ' />';
+            $html .= '<input ' . $field['attributes'] . ' type="checkbox" name="' . $field_id . '[]" value="' . $option_id . '" id="' . $field_display_id . '_' . $option_id . '" ' . (in_array($option_id, $field['value']) ? 'checked="checked"' : '') . ' />';
             $html .= '<label for="' . $field_id . '_' . $option_id . '">' . esc_html($option) . '</label>';
             $html .= '</li>';
         }
@@ -141,7 +150,7 @@ function wpu_extranet__display_field($field_id, $field) {
         break;
     case 'select':
         $html .= $label;
-        $html .= '<select  ' . $field['attributes'] . ' ' . ($field['multiple'] ? 'multiple' : '') . ' name="' . $field_id . ($field['multiple'] ? '[]' : '') . '" id="' . $field_id . '" >';
+        $html .= '<select  ' . $field['attributes'] . ' ' . ($field['multiple'] ? 'multiple' : '') . ' name="' . $field_id . ($field['multiple'] ? '[]' : '') . '" id="' . $field_display_id . '" >';
         $selected_options = array($field['value']);
         if ($field['multiple']) {
             $selected_options = explode(';', $field['value']);
@@ -153,7 +162,7 @@ function wpu_extranet__display_field($field_id, $field) {
         break;
     case 'textarea':
         $html .= $label;
-        $html .= '<textarea ' . $field['attributes'] . ' name="' . $field_id . '" id="' . $field_id . '" class="input" autocapitalize="off">' . esc_textarea($field['value']) . '</textarea>';
+        $html .= '<textarea ' . $field['attributes'] . ' name="' . $field_id . '" id="' . $field_display_id . '" class="input" autocapitalize="off">' . esc_textarea($field['value']) . '</textarea>';
         break;
     default:
         $value = $field['value'];
@@ -163,7 +172,7 @@ function wpu_extranet__display_field($field_id, $field) {
             $checked = $field['value'] == '1' ? 'checked="checked"' : '';
         }
         $html .= $is_radio_check ? '' : $label;
-        $html .= '<input ' . $field['attributes'] . ' type="' . $field['type'] . '" name="' . $field_id . '" ' . $checked . ' value="' . esc_attr($value) . '" id="' . $field_id . '" class="input" size="20" autocapitalize="off" />';
+        $html .= '<input ' . $field['attributes'] . ' type="' . $field['type'] . '" name="' . $field_id . '" ' . $checked . ' value="' . esc_attr($value) . '" id="' . $field_display_id . '" class="input" size="20" autocapitalize="off" />';
         $html .= $is_radio_check ? $label : '';
     }
 
@@ -187,10 +196,6 @@ function wpu_extranet__save_fields($fields, $args = array()) {
         return false;
     }
 
-    if (!isset($_POST['wpuextranet_' . $args['form_id']]) || !wp_verify_nonce($_POST['wpuextranet_' . $args['form_id']], 'wpuextranet_' . $args['form_id'] . '_action')) {
-        return false;
-    }
-
     $defaults = array(
         'form_id' => 'editmetas',
         'user_id' => get_current_user_id(),
@@ -198,6 +203,11 @@ function wpu_extranet__save_fields($fields, $args = array()) {
         'callback_after_fields' => false
     );
     $args = array_merge($defaults, $args);
+
+    if (!isset($_POST['wpuextranet_' . $args['form_id']]) || !wp_verify_nonce($_POST['wpuextranet_' . $args['form_id']], 'wpuextranet_' . $args['form_id'] . '_action')) {
+        return false;
+    }
+
     $errors = array();
     $fields = apply_filters('wpu_extranet__save_fields', $fields, $args);
 

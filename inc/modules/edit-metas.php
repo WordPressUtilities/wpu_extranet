@@ -25,36 +25,15 @@ function wpu_extranet_update_metas__action() {
         return '';
     }
 
-    if (!isset($_POST['wpuextranet_editmetas']) || !wp_verify_nonce($_POST['wpuextranet_editmetas'], 'wpuextranet_editmetas_action')) {
-        return '';
-    }
-
-    $user_id = get_current_user_id();
-
     $fields = wpu_extranet__user_register_fields();
+    $fields = apply_filters('wpu_extranet_update_metas__form_fields', $fields);
 
-    /* Check errors */
-    $errors = array();
-    $has_update = false;
-    foreach ($fields as $id => $field) {
-        if (isset($_POST[$id])) {
-            $has_update = true;
-            update_user_meta($user_id, $id, trim(sanitize_text_field($_POST[$id])));
+    return wpu_extranet__save_fields($fields, array(
+        'form_id' => 'editmetas',
+        'callback_after_fields' => function(){
+            wpu_extranet_update_metas__action__avatar(get_current_user_id());
         }
-    }
-
-    $upload_avatar = wpu_extranet_update_metas__action__avatar($user_id);
-
-    if ($has_update || $upload_avatar) {
-        return wpuextranet_get_html_errors(array(
-            __('Profile successfully updated!', 'wpu_extranet')
-        ), array(
-            'form_id' => 'editmetas',
-            'type' => 'success'
-        ));
-    }
-
-    return '';
+    ));
 }
 
 function wpu_extranet_update_metas__action__avatar($user_id) {
@@ -169,6 +148,8 @@ EOT;
         $field['value'] = get_user_meta(get_current_user_id(), $field_id, 1);
         $fields[$field_id] = $field;
     endforeach;
+
+    $fields = apply_filters('wpu_extranet_update_metas__form_fields', $fields);
 
     return wpu_extranet_get_form_html('editmetas', $fields, array(
         'before_fields' => $args['before_fields'],
