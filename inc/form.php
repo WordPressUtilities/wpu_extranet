@@ -83,8 +83,11 @@ function wpu_extranet__correct_field($field, $field_id) {
         'required' => false,
         'multiple' => false,
         'readonly' => false,
+        'pattern' => false,
+        'pattern_label' => '',
         'value' => '',
         'options' => array(),
+        'placeholder' => '',
         'attributes' => '',
         'type' => 'text',
         'before_content' => '',
@@ -112,6 +115,15 @@ function wpu_extranet__display_field($field_id, $field) {
     }
     if ($field['required']) {
         $field['attributes'] .= ' required="required"';
+    }
+    if ($field['pattern']) {
+        $field['attributes'] .= ' pattern="' . esc_attr($field['pattern']) . '"';
+    }
+    if ($field['pattern_label'] && !$field['placeholder']) {
+        $field['placeholder'] = $field['pattern_label'];
+    }
+    if ($field['placeholder']) {
+        $field['attributes'] .= ' placeholder="' . esc_attr($field['placeholder']) . '"';
     }
     $field_display_id = 'f' . uniqid() . '_' . $field_id;
 
@@ -255,6 +267,11 @@ function wpu_extranet__save_fields($fields, $args = array()) {
         }
         if (isset($field['maxlength']) && strlen($value) > $field['maxlength']) {
             $errors[] = sprintf(__('The field %s must be at most %s characters.', 'wpu_extranet'), $field['label'], $field['maxlength']);
+            continue;
+        }
+        if (isset($field['pattern']) && $field['pattern'] && !preg_match($field['pattern'], $value)) {
+            $pattern_label = $field['pattern_label'] ? $field['pattern_label'] : $field['pattern'];
+            $errors[] = sprintf(__('The field %s must match the pattern %s.', 'wpu_extranet'), $field['label'], $pattern_label);
             continue;
         }
 
