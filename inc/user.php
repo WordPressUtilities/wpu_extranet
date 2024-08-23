@@ -76,6 +76,11 @@ add_filter('get_avatar_url', function ($avatar_url, $id_or_email, $args) {
         $avatar_id = get_user_meta($user->data->ID, 'wpuextranet_avatar_id', true);
         if ($avatar_id) {
             return wp_get_attachment_image_url($avatar_id, 'thumbnail');
+        } else {
+            $wpu_extranet_default_avatar = get_option('wpu_extranet_default_avatar');
+            if ($wpu_extranet_default_avatar) {
+                return add_query_arg('d', wp_get_attachment_image_url($wpu_extranet_default_avatar, 'thumbnail'), $avatar_url);;
+            }
         }
     }
 
