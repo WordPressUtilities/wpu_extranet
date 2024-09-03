@@ -93,7 +93,8 @@ function wpu_extranet__correct_field($field, $field_id) {
         'before_content' => '',
         'after_content' => '',
         'grid_start' => false,
-        'grid_end' => false
+        'grid_end' => false,
+        'callback_validation' => false,
     );
     $field = array_merge($defaults, $field);
     if (!isset($field['options']) || !is_array($field['options'])) {
@@ -288,6 +289,11 @@ function wpu_extranet__save_fields($fields, $args = array()) {
             $errors[] = sprintf(__('The field %s must be a valid option.', 'wpu_extranet'), $field['label']);
             continue;
         }
+
+        if(isset($field['callback_validation']) && is_callable($field['callback_validation'])) {
+            $errors = call_user_func($field['callback_validation'], $errors, $field_id, $field, $value, $args);
+        }
+        $errors = apply_filters('wpu_extranet__save_fields__field', $errors, $field_id, $field, $value, $args);
 
         if (!empty($errors)) {
             break;
