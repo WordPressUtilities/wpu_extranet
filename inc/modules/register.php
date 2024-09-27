@@ -52,6 +52,10 @@ function wpu_extranet_register__action() {
         wp_redirect(wpu_extranet__get_dashboard_page());
         die;
     }
+    if (empty($_POST)) {
+        return '';
+    }
+
     /* Not submitting or displaying an error message */
     if (!isset($_POST['wpuextranet_register']) && !isset($_GET['register']) && !isset($_GET['registererror'])) {
         return '';
@@ -70,15 +74,34 @@ function wpu_extranet_register__action() {
         return '';
     }
 
-    if(isset($_POST['user_email'])){
+    if (isset($_POST['user_email'])) {
         $messages = apply_filters('wpu_extranet__email__validation', $messages, $_POST['user_email']);
     }
 
-    $register_success_user_id = false;
-    if (!empty($_POST) && isset($_POST['user_login'], $_POST['user_email'], $_POST['user_password'])) {
+    if (isset($_POST['user_login'], $_POST['user_email'], $_POST['user_password'], $_POST['user_password_confirm'])) {
         $user_login = sanitize_text_field($_POST['user_login']);
         $user_email = sanitize_email($_POST['user_email']);
-        $user_id = register_new_user($user_login, $user_email);
+        $user_id = false;
+
+        if (username_exists($user_login)) {
+            $messages[] = __('This username already exists.', 'wpu_extranet');
+        }
+
+        if (email_exists($user_email)) {
+            $messages[] = __('This email is already registered.', 'wpu_extranet');
+        }
+
+        if (!validate_username($user_login)) {
+            $messages[] = __('This username contains invalid characters.', 'wpu_extranet');
+        }
+
+        if ($_POST['user_password'] != $_POST['user_password_confirm']) {
+            $messages[] = __('Passwords do not match.', 'wpu_extranet');
+        }
+
+        if (empty($messages)) {
+            $user_id = register_new_user($user_login, $user_email);
+        }
 
         // Registration was a success
         // Log user and redirect to the dashboard
@@ -159,6 +182,11 @@ function wpu_extranet_register__form($args = array()) {
         'type' => 'password',
         'attributes' => 'minlength="6" autocomplete="off" required="required"',
         'label' => __('Password', 'wpu_extranet')
+    ));
+    $html .= wpu_extranet__display_field('user_password_confirm', array(
+        'type' => 'password',
+        'attributes' => 'minlength="6" autocomplete="off" required="required"',
+        'label' => __('Password confirmation', 'wpu_extranet')
     ));
     do_action('register_form');
     $honeypot_id = wpu_extranet_register_get_honeypot_id();
