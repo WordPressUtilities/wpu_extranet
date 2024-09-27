@@ -221,6 +221,8 @@ function wpu_extranet__save_fields($fields, $args = array()) {
         return false;
     }
 
+    $_POST = apply_filters('wpu_extranet__save_fields__post', $_POST, $args);
+
     $errors = array();
     $fields = apply_filters('wpu_extranet__save_fields', $fields, $args);
 
