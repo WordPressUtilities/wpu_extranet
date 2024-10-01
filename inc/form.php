@@ -25,6 +25,9 @@ function wpu_extranet_get_form_html($form_id, $fields = array(), $args = array()
         $args['hidden_fields'] = array();
     }
 
+    $args = apply_filters('wpu_extranet_get_form_html__args', $args, $form_id, $fields);
+    $fields = apply_filters('wpu_extranet_get_form_html__fields', $fields, $form_id, $args);
+
     $form_attributes = '';
     foreach ($fields as $field_id => $field) {
         if (isset($field['type']) && $field['type'] == 'file') {
