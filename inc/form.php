@@ -97,7 +97,7 @@ function wpu_extranet__correct_field($field, $field_id) {
         'after_content' => '',
         'grid_start' => false,
         'grid_end' => false,
-        'callback_validation' => false,
+        'callback_validation' => false
     );
     $field = array_merge($defaults, $field);
     if (!isset($field['options']) || !is_array($field['options'])) {
@@ -129,6 +129,13 @@ function wpu_extranet__display_field($field_id, $field) {
     if ($field['placeholder']) {
         $field['attributes'] .= ' placeholder="' . esc_attr($field['placeholder']) . '"';
     }
+    if ($field['minlength'] && is_numeric($field['minlength'])) {
+        $field['attributes'] .= ' minlength="' . esc_attr($field['minlength']) . '"';
+    }
+    if ($field['maxlength'] && is_numeric($field['maxlength'])) {
+        $field['attributes'] .= ' maxlength="' . esc_attr($field['maxlength']) . '"';
+    }
+
     $field_display_id = 'f' . uniqid() . '_' . $field_id;
 
     $field = apply_filters('wpu_extranet__display_field__field', $field, $field_id);
@@ -295,7 +302,7 @@ function wpu_extranet__save_fields($fields, $args = array()) {
             continue;
         }
 
-        if(isset($field['callback_validation']) && is_callable($field['callback_validation'])) {
+        if (isset($field['callback_validation']) && is_callable($field['callback_validation'])) {
             $errors = call_user_func($field['callback_validation'], $errors, $field_id, $field, $value, $args);
         }
         $errors = apply_filters('wpu_extranet__save_fields__field', $errors, $field_id, $field, $value, $args);
