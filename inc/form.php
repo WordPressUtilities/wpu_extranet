@@ -129,10 +129,10 @@ function wpu_extranet__display_field($field_id, $field) {
     if ($field['placeholder']) {
         $field['attributes'] .= ' placeholder="' . esc_attr($field['placeholder']) . '"';
     }
-    if ($field['minlength'] && is_numeric($field['minlength'])) {
+    if (isset($field['minlength']) && is_numeric($field['minlength'])) {
         $field['attributes'] .= ' minlength="' . esc_attr($field['minlength']) . '"';
     }
-    if ($field['maxlength'] && is_numeric($field['maxlength'])) {
+    if (isset($field['maxlength']) && is_numeric($field['maxlength'])) {
         $field['attributes'] .= ' maxlength="' . esc_attr($field['maxlength']) . '"';
     }
 
