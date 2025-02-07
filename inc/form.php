@@ -317,6 +317,8 @@ function wpu_extranet__save_fields($fields, $args = array()) {
         $errors = call_user_func($args['callback_after_fields'], $errors, $args);
     }
 
+    do_action('wpu_extranet__save_fields__after', $args['user_id'], $errors, $args);
+
     $return_type = 'error';
     if (empty($errors)) {
         $return_type = 'success';

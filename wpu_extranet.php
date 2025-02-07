@@ -4,7 +4,7 @@ defined('ABSPATH') || die;
 /*
 Plugin Name: WPU Extranet
 Description: Simple toolbox to create an extranet or a customer account
-Version: 0.16.5
+Version: 0.16.6
 Author: Darklg
 Author URI: https://darklg.me/
 Text Domain: wpu_extranet
@@ -18,7 +18,7 @@ Plugin URI: https://github.com/WordPressUtilities/wpu_extranet
 Update URI: https://github.com/WordPressUtilities/wpu_extranet
 */
 
-define('WPU_EXTRANET_VERSION', '0.16.5');
+define('WPU_EXTRANET_VERSION', '0.16.6');
 
 /* ----------------------------------------------------------
   Settings
@@ -47,11 +47,13 @@ require_once __DIR__ . '/inc/modules/register.php';
   Translation
 ---------------------------------------------------------- */
 
-add_action('plugins_loaded', 'wpu_extranet_plugins_loaded', 10);
+add_action('init', 'wpu_extranet_plugins_loaded', 10);
 function wpu_extranet_plugins_loaded() {
     $lang_dir = dirname(plugin_basename(__FILE__)) . '/lang/';
-    if (!load_plugin_textdomain('wpu_extranet', false, $lang_dir)) {
+    if (strpos(__DIR__, 'mu-plugins') !== false) {
         load_muplugin_textdomain('wpu_extranet', $lang_dir);
+    } else {
+        load_plugin_textdomain('wpu_extranet', false, $lang_dir);
     }
     $plugin_description = __('Simple toolbox to create an extranet or a customer account', 'wpuactionlogs');
 }
